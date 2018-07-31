@@ -7,7 +7,7 @@ Date: 2018-7-26
 Depends: R (>= 3.0.0)
 Imports: readxl (>= 1.1.0), writexl(>= 1.0)
 Maintainer: Agapios Panos <panosagapios@gmail.com>
-Description: A package that evaluates patient data for START (Screening Tool to Alert doctors to Right Treatments) and STOPP (Screening Tool of Older People's Potentially Inappropriate Prescriptions) criteria and indicates the patients that are fullfil either a START or a STOPP criterion. The available criteria are the following.
+Description: A package that evaluates patient data for START (Screening Tool to Alert doctors to Right Treatments) and STOPP (Screening Tool of Older People's Potentially Inappropriate Prescriptions) criteria and indicates the patients that are fulfill either a START or a STOPP criterion. The available criteria are the following.
             START A1, START E2, STOPP B6, STOPP B8, STOPP D5, STOPP F4, STOPP H3.
 Encoding: UTF-8
 License: GPL (>= 2)

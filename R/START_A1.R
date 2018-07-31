@@ -57,12 +57,12 @@ START_A1 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   }
 
   # storing the results
-  fullfil_count <- length(which(evaluated_patients$status == 1))
-  total_count <- fullfil_count + length(which(evaluated_patients$status == 0))
+  fulfill_count <- length(which(evaluated_patients$status == 1))
+  total_count <- fulfill_count + length(which(evaluated_patients$status == 0))
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('START A1: ', fullfil_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  cat ('START A1: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
 
   if (excel_out) {
     # export the evaluated list of patients to excel file
