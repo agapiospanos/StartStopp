@@ -1,0 +1,9 @@
+***StartStopp, version 0.1.1 ***
+
+- fixed STOPP F4 criterion. Conditions checking was not matching properly the ATC code with the corresponding medicine strength. It was comparing the medicine strengths of all ATC codes for that patient with the desired medicine strength and this could trigger false positives.
+- implemented the include_missing argument in the import_excel_data function to handle 1-1 medicine strength and ATC code correspondance
+- added 20 more criteria
+
+***StartStopp, version 0.1.0 ***
+
+- initial release on github

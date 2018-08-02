@@ -1,0 +1,37 @@
+#' Evaluates the imported patients' data for the all the STOPP criteria at once.
+#'
+#' @author
+#' Agapios Panos <panosagapios@gmail.com>
+#'
+#' @param path (Character) the path that the excel file can be read from.
+#' @param export_data_path (Character) (optional) (default: working directory) the path for excel file output.
+#'
+#' @export
+
+
+STOPPall <- function(path, export_data_path) {
+  STOPP_B1(path = path, export_data_path = export_data_path)
+  STOPP_B2(path = path, export_data_path = export_data_path)
+  STOPP_B3(path = path, export_data_path = export_data_path)
+  STOPP_B4(path = path, export_data_path = export_data_path)
+  STOPP_B5(path = path, export_data_path = export_data_path)
+  STOPP_B6(path = path, export_data_path = export_data_path)
+  STOPP_B7(path = path, export_data_path = export_data_path)
+  STOPP_B8(path = path, export_data_path = export_data_path)
+  STOPP_B9(path = path, export_data_path = export_data_path)
+  STOPP_B10(path = path, export_data_path = export_data_path)
+  STOPP_B13(path = path, export_data_path = export_data_path)
+  STOPP_C1(path = path, export_data_path = export_data_path)
+  STOPP_C2(path = path, export_data_path = export_data_path)
+  STOPP_C3(path = path, export_data_path = export_data_path)
+  STOPP_C7(path = path, export_data_path = export_data_path)
+  STOPP_C10(path = path, export_data_path = export_data_path)
+  STOPP_C11(path = path, export_data_path = export_data_path)
+  STOPP_D1(path = path, export_data_path = export_data_path)
+  STOPP_D2(path = path, export_data_path = export_data_path)
+  STOPP_D3(path = path, export_data_path = export_data_path)
+  STOPP_D5(path = path, export_data_path = export_data_path)
+  STOPP_D6(path = path, export_data_path = export_data_path)
+  STOPP_F4(path = path, export_data_path = export_data_path)
+  STOPP_H3(path = path, export_data_path = export_data_path)
+}

@@ -24,7 +24,7 @@ STOPP_F4 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
   # Importing the data
   data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 1, var_col = 'med_strength')
+  data <- import_excel_data(current_data = data, path = path, worksheet = 1, var_col = 'med_strength', include_missing = TRUE)
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -35,27 +35,46 @@ STOPP_F4 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
     pid <- names(sapply(pdata[i], names))
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
+
+      # get vectors of atc codes and medicine strength for the current patient
+      patient_atc_codes <- unlist(pdata[[i]][1])
+      med_strength <- unlist(pdata[[i]][2])
+
+      cond1 <- cond2 <- cond3 <- FALSE
+
+      index1 <- grep('B03AA02', patient_atc_codes, ignore.case = T)
+      if (length(index1)>0) { # we get length of index because the grep returns an empty integer vector if the B03AA02 is not found.
+        if (as.numeric(med_strength[index1]) > 600) { # checking if med_strength for this atc code is greater that 600
+          cond1 <- TRUE
+        }
+      }
+
+      index2 <- grep('B03AA07', patient_atc_codes, ignore.case = T)
+      if (length(index2)>0) { # we get length of index because the grep returns an empty integer vector if the B03AA07 is not found.
+        if (as.numeric(med_strength[index2]) > 600) { # checking if med_strength for this atc code is greater that 600
+          cond2 <- TRUE
+        }
+      }
+
+      index3 <- grep('B03AA03', patient_atc_codes, ignore.case = T)
+      if (length(index3)>0) { # we get length of index because the grep returns an empty integer vector if the B03AA03 is not found.
+        if (as.numeric(med_strength[index3]) > 1800) { # checking if med_strength for this atc code is greater that 1800
+          cond3 <- TRUE
+        }
+      }
+
       # checking if fulfills at least one set of primary condition AND secondary condition
-      if ( ( any(grepl('B03AA02', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition B03AA02 in the med_gen_decod list AND secondary condition in med_strength list
-             any(as.numeric(unlist(pdata[[i]][2])) > 600)
-      ) | (
-        any(grepl('B03AA07', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition B03AA07 in the med_gen_decod list AND secondary condition in med_strength list
-        any(as.numeric(unlist(pdata[[i]][2])) > 600)
-      ) | (
-        any(grepl('B03AA03', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition B03AA03 in the med_gen_decod list AND secondary condition in med_strength list
-        any(as.numeric(unlist(pdata[[i]][2])) > 1800)
-      )
-      ) {
+      if ( cond1 | cond2 | cond3 ) {
         # inserting the record to the data.frame evaluated_patients
-        evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
+        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
       } else {
         # inserting the record to the data.frame evaluated_patients
-        evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       }
 
     } else { # patient has missing data
       # inserting the record to the data.frame evaluated_patients
-      evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
+      evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
     }
   }
 

@@ -4,7 +4,8 @@
 \alias{import_excel_data}
 \title{Imports patient data from multiple sheets of excel file.}
 \usage{
-import_excel_data(current_data, path, worksheet, var_col, ignore_na = FALSE)
+import_excel_data(current_data, path, worksheet, var_col, ignore_na = FALSE,
+  include_missing = FALSE)
 }
 \arguments{
 \item{current_data}{(List) the data that was imported by another call of import_excel_data so that this call will append the new data to the old ones.}
@@ -16,9 +17,11 @@ import_excel_data(current_data, path, worksheet, var_col, ignore_na = FALSE)
 \item{var_col}{(Character) the column that stores the desired variable}
 
 \item{ignore_na}{(Boolean) (optional) (default: FALSE) a boolean variable that indicates whether to ignore any N/As found in excel (if set to FALSE) or to handle them as missing data (if set to TRUE).}
+
+\item{include_missing}{(Boolean) (optional) (default: FALSE) a boolean that indicated whether to include the missing values as NAs in the data to achieve one to one correspondance in the data if necessary.}
 }
 \value{
-list of [[1]]patient data for the specified variable. [[2]] missing patient id and variable name as specified in excel that we used to import data.
+list of [[1]] patient data for the specified variable. [[2]] missing patient id and variable name as specified in excel that we used to import data.
 }
 \description{
 Imports patient data from multiple sheets of excel file.

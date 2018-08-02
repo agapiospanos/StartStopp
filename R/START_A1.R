@@ -39,20 +39,20 @@ START_A1 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
       if ( any(grepl('^B01AA|^B01AE|^B01AF', unlist(pdata[[i]][2]), ignore.case=T)) # checking without condition B01AA* OR B01AE* OR B01AF* in the med_gen_decod list
       ){
         # inserting the record to the data.frame evaluated_patients
-        evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
         #checking if fulfills at least one primary condition
         if ( any(grepl('I48.2', unlist(pdata[[i]][1]), ignore.case=T)) ) { # checking primary condition I48.2 in the ih_icd10_decod list
           # inserting the record to the data.frame evaluated_patients
-          evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
         } else {
           # inserting the record to the data.frame evaluated_patients
-          evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
         }
       }
     } else { # patient has missing data
       # inserting the record to the data.frame evaluated_patients
-      evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
+      evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
     }
   }
 

@@ -5,23 +5,24 @@
 #' @param worksheet (Character) the worksheet that the desired variable is stored in.
 #' @param var_col (Character) the column that stores the desired variable
 #' @param ignore_na (Boolean) (optional) (default: FALSE) a boolean variable that indicates whether to ignore any N/As found in excel (if set to FALSE) or to handle them as missing data (if set to TRUE).
-#' @return list of [[1]]patient data for the specified variable. [[2]] missing patient id and variable name as specified in excel that we used to import data.
+#' @param include_missing (Boolean) (optional) (default: FALSE) a boolean that indicated whether to include the missing values as NAs in the data to achieve one to one correspondance in the data if necessary.
+#' @return list of [[1]] patient data for the specified variable. [[2]] missing patient id and variable name as specified in excel that we used to import data.
 #'
 #' @author
 #' Agapios Panos <panosagapios@gmail.com>
 #'
 #' @importFrom readxl read_excel
 
-import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=FALSE) {
+import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=FALSE, include_missing=FALSE) {
 
   # specify the excel file location and worksheet
   sheet <- read_excel(path, worksheet)
 
-  # storing the patients' ids
-  pids <- unlist(sheet['usubjid'])
-
   # ordering the sheet in ascending order by the specified column. Necessary for the proper parsing of the patient data as the algorithm expects the sheet data to be ordered and parses it in a serial way.
   sheet <- sheet[order(unlist(sheet['usubjid'])),]
+
+  # storing the patients' ids
+  pids <- unlist(sheet['usubjid'])
 
   # initializing the patient id for sheet using the first patient's id.
   pid <- pids[1]
@@ -55,6 +56,12 @@ import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=
           # update the logical var
           has_missing <- TRUE
         }
+
+        # if we must include the missing to achieve 1-1 correspondace we insert an NA
+        if(include_missing){
+          conditions <- c(conditions, NA)
+        }
+
       } else { # is not NA data
         # storing the data to the list
         conditions <- c(conditions, sheet[[var_col]][i])
@@ -86,6 +93,11 @@ import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=
           has_missing <- TRUE
           # set conditions as an empty list
           conditions <- c()
+        }
+
+        # if we must include the missing to achieve 1-1 correspondace we insert an NA
+        if(include_missing){
+          conditions <- c(NA)
         }
 
       } else {

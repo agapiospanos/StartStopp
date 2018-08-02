@@ -22,9 +22,28 @@ START
 
 STOPP
 
+- STOPP B1
+- STOPP B2
+- STOPP B3
+- STOPP B4
+- STOPP B5
 - STOPP B6
+- STOPP B7
 - STOPP B8
+- STOPP B9
+- STOPP B10
+- STOPP B13
+- STOPP C1
+- STOPP C2
+- STOPP C3
+- STOPP C7
+- STOPP C10
+- STOPP C11
+- STOPP D1
+- STOPP D2
+- STOPP D3
 - STOPP D5
+- STOPP D6
 - STOPP F4
 - STOPP H3
 
@@ -60,4 +79,11 @@ STOPP_B6(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
 # if you do not wish to have an excel file exported and you prefer to have the data assigned 
 # to a variable you can also omit the export by using the excel_out = FALSE
 output <- STOPP_B6(path = "~/patient_data.xlsx", excel_out = FALSE)
+
+# you can also run all the STOPP criteria at once. Note that this will generate many excel files in
+# the specified destination path
+STOPPall(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
+
+# similarly you can also run all the START criteria at once
+STARTall(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
 ```

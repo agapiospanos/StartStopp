@@ -40,7 +40,7 @@ STOPP_H3 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
       if ( any(grepl('N02BE01|N02BE51|N02BE71', unlist(pdata[[i]][1]), ignore.case=T)) # checking unless condition N02BE01 OR N02BE51 OR N02BE71 in the med_gen_decod list
       ){
         # inserting the record to the data.frame evaluated_patients
-        evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
         #checking if fulfills at least one primary condition AND at least one secondary condition
         if ( ( any(grepl('^M01A|^N02BA|^M01BA', unlist(pdata[[i]][1]), ignore.case=T)) # checking primary condition M01A* OR N02BA* OR M01BA*  in the med_gen_decod list
@@ -50,15 +50,15 @@ STOPP_H3 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
         )
         ) {
           # inserting the record to the data.frame evaluated_patients
-          evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
         } else {
           # inserting the record to the data.frame evaluated_patients
-          evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
         }
       }
     } else { # patient has missing data
      # inserting the record to the data.frame evaluated_patients
-      evaluated_patients <<- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
+      evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
     }
   }
 

@@ -1,4 +1,4 @@
-#' Evaluates the imported patients' data for the START E2 criterion.
+#' Evaluates the imported patients' data for the STOPP D1 criterion.
 #'
 #' @param path (Character) the path that the excel file can be read from.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
@@ -12,7 +12,7 @@
 #' @export
 
 
-START_E2 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
+STOPP_D1 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
   missing_data_patients <- list()
 
@@ -24,6 +24,7 @@ START_E2 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
   # Importing the data
   data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod')
+  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod')
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -33,23 +34,10 @@ START_E2 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
     # checking if the patient id is in the list of missing data
     pid <- names(sapply(pdata[i], names))
 
-    # checking if the patient id is in the list of missing data
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
-      if ((     any(grepl('^H02AB', unlist(pdata[[i]][1]), ignore.case=T)) &
-                !any(grepl('M05BB04|M05BB05|M05BB08', unlist(pdata[[i]][1]), ignore.case=T))
-          ) | ( any(grepl('^H02AB', unlist(pdata[[i]][1]), ignore.case=T)) &
-                !( any(grepl('M05BA', unlist(pdata[[i]][1]), ignore.case=T))  &
-                   any(grepl('A11CC|A11CB', unlist(pdata[[i]][1]), ignore.case=T)) &
-                   any(grepl('A12AA', unlist(pdata[[i]][1]), ignore.case=T))
-                )
-          ) | ( any(grepl('^H02AB', unlist(pdata[[i]][1]), ignore.case=T)) &
-                !( any(grepl('M05BA', unlist(pdata[[i]][1]), ignore.case=T))  &
-                   any(grepl('A12AX', unlist(pdata[[i]][1]), ignore.case=T))
-                )
-          ) | ( any(grepl('^H02AB', unlist(pdata[[i]][1]), ignore.case=T)) &
-                !(any(grepl('A12AA|A12AX', unlist(pdata[[i]][1]), ignore.case=T)) &
-                  any(grepl('M05BB03|M05BB06|M05BB07', unlist(pdata[[i]][1]), ignore.case=T)))
-          )
+      #checking if fulfills at least one primary condition AND at least one secondary condition
+      if ( any(grepl('^N06AA|N06CA01|N06CA02', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition N06AA* OR N06CA01 OR N06CA02 in the med_gen_decod list
+           any(grepl('^F00|^F01|^F02|F03|^G30|G31.0|G31.1|G31.8|H40.2|^I44|^I45|N40|^R33', unlist(pdata[[i]][2]), ignore.case=T)) # checking for secondary conditions D66 OR D67 OR D68.0 OR D69.3 OR K92.0 OR K92.1 OR K92.2 OR I60* OR I61* OR I62* OR I64 in the ih_icd10__decod list.
       ) {
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
@@ -58,7 +46,7 @@ START_E2 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       }
     } else { # patient has missing data
-      # inserting the record to the data.frame evaluated_patients
+     # inserting the record to the data.frame evaluated_patients
       evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
     }
   }
@@ -69,11 +57,11 @@ START_E2 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('START E2: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  cat ('STOPP D1: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
 
   if (excel_out) {
     # export the evaluated list of patients to excel file
-    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/START-E2.xlsx'), col_names = TRUE)
+    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/STOPP-D1.xlsx'), col_names = TRUE)
   }
 
   invisible (list(evaluated_patients)) # instead of return as we do not want to be printed
