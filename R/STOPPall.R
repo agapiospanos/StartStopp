@@ -32,6 +32,10 @@ STOPPall <- function(path, export_data_path) {
   STOPP_D3(path = path, export_data_path = export_data_path)
   STOPP_D5(path = path, export_data_path = export_data_path)
   STOPP_D6(path = path, export_data_path = export_data_path)
+  STOPP_D7(path = path, export_data_path = export_data_path)
+  STOPP_D9(path = path, export_data_path = export_data_path)
+  STOPP_D10(path = path, export_data_path = export_data_path)
+  STOPP_D11(path = path, export_data_path = export_data_path)
   STOPP_F4(path = path, export_data_path = export_data_path)
   STOPP_H3(path = path, export_data_path = export_data_path)
 }

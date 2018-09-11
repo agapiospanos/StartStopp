@@ -4,8 +4,8 @@
 \alias{import_excel_data}
 \title{Imports patient data from multiple sheets of excel file.}
 \usage{
-import_excel_data(current_data, path, worksheet, var_col, ignore_na = FALSE,
-  include_missing = FALSE)
+import_excel_data(current_data, path, worksheet, var_col,
+  ignore_na = FALSE, include_missing = FALSE)
 }
 \arguments{
 \item{current_data}{(List) the data that was imported by another call of import_excel_data so that this call will append the new data to the old ones.}

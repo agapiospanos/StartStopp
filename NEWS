@@ -1,3 +1,9 @@
+***StartStopp, version 0.1.2 ***
+
+- fixed errors in encoding the STOPP D2 and STOPP D6 criteria. They now work as expected.
+- added 4 more STOPP criteria
+- updated README file
+
 ***StartStopp, version 0.1.1 ***
 
 - fixed STOPP F4 criterion. Conditions checking was not matching properly the ATC code with the corresponding medicine strength. It was comparing the medicine strengths of all ATC codes for that patient with the desired medicine strength and this could trigger false positives.

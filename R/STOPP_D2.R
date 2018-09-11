@@ -43,7 +43,7 @@ STOPP_D2 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
       } else {
         #checking if fulfills at least one primary condition AND at least one secondary condition
         if ( any(grepl('^N06AA|N06CA01|N06CA02', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition N06AA* OR N06CA01 OR N06CA02 in the med_gen_decod list
-             any(grepl('^F32|^F33', unlist(pdata[[i]][1]), ignore.case=T)) # checking secondary condition F32* OR F33* in the ih_icd10__decod list
+             any(grepl('^F32|^F33', unlist(pdata[[i]][2]), ignore.case=T)) # checking secondary condition F32* OR F33* in the ih_icd10__decod list
         ) {
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))

@@ -1,4 +1,4 @@
-#' Evaluates the imported patients' data for the STOPP D6 criterion.
+#' Evaluates the imported patients' data for the STOPP D11 criterion.
 #'
 #' @param path (Character) the path that the excel file can be read from.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
@@ -12,7 +12,7 @@
 #' @export
 
 
-STOPP_D6 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
+STOPP_D11 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
   missing_data_patients <- list()
 
@@ -35,22 +35,16 @@ STOPP_D6 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
     pid <- names(sapply(pdata[i], names))
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
-      # checking for the unless condition
-      if ( any(grepl('N05AH04|N05AH02|^N05AN', unlist(pdata[[i]][1]), ignore.case=T)) # checking unless condition N05AH04 OR N05AH02 OR N05AN* in the med_gen__decod list
-      ){
+      #checking if fulfills at least one primary condition AND at least one secondary condition
+      if ( any(grepl('^N06DA', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition N06DA* in the med_gen_decod list
+           ( any(grepl('^C07|C01AA05|C01AA08|C08DB01|C08DA01|C09BB10|C08DA51', unlist(pdata[[i]][1]), ignore.case=T)) | # checking secondary conditions C07* OR C01AA05 OR C01AA08 OR C08DB01 OR C08DA01 OR C09BB10 OR C08DA51 in the med_gen_decod list
+             any(grepl('I49.5|R00.1|I44.1|I44.2|I44.3|I45.5|I45.9|Q24.9|R55', unlist(pdata[[i]][2]), ignore.case=T)) ) # checking secondary conditions I49.5 OR R00.1 OR I44.1 OR I44.2 OR I44.3 OR I45.5 OR I45.9 OR Q24.9 OR R55 in the ih_icd10__decod list
+      ) {
+        # inserting the record to the data.frame evaluated_patients
+        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
+      } else {
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
-      } else {
-        #checking if fulfills at least one primary condition AND at least one secondary condition
-        if ( any(grepl('^N05A', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition N05A* in the med_gen_decod list
-             any(grepl('G20|^G21|G23.1|G23.2|G31.8|G90.3', unlist(pdata[[i]][2]), ignore.case=T)) # checking secondary condition G20 OR G21* OR G23.1 OR G23.2 OR G31.8 OR G90.3 in the ih_icd10__decod list
-        ) {
-          # inserting the record to the data.frame evaluated_patients
-          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
-        } else {
-          # inserting the record to the data.frame evaluated_patients
-          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
-        }
       }
     } else { # patient has missing data
      # inserting the record to the data.frame evaluated_patients
@@ -64,11 +58,11 @@ STOPP_D6 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('STOPP D6: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  cat ('STOPP D11: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
 
   if (excel_out) {
     # export the evaluated list of patients to excel file
-    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/STOPP-D6.xlsx'), col_names = TRUE)
+    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/STOPP-D11.xlsx'), col_names = TRUE)
   }
 
   invisible (list(evaluated_patients)) # instead of return as we do not want to be printed
