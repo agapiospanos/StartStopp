@@ -1,7 +1,7 @@
 StartStopp R Package
 ================
 
-<img src="man/figures/start-stopp-logo.png" width=500 style="margin: 0 auto; display: block;"/>
+[![Build Status](https://travis-ci.com/agapiospanos/StartStopp.svg?branch=master)](https://travis-ci.com/agapiospanos/StartStopp) <img src="man/figures/start-stopp-logo.png" width=500 style="margin: 0 auto; display: block;"/>
 
 Description
 -----------
