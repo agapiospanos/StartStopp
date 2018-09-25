@@ -1,4 +1,4 @@
-#' Evaluates the imported patients' data for the all the STOPP criteria at once.
+#' Evaluates the imported patients' data for all the STOPP criteria at once.
 #'
 #' @author
 #' Agapios Panos <panosagapios@gmail.com>
@@ -36,6 +36,33 @@ STOPPall <- function(path, export_data_path) {
   STOPP_D9(path = path, export_data_path = export_data_path)
   STOPP_D10(path = path, export_data_path = export_data_path)
   STOPP_D11(path = path, export_data_path = export_data_path)
+  STOPP_D14(path = path, export_data_path = export_data_path)
+  STOPP_E1(path = path, export_data_path = export_data_path)
+  STOPP_E2(path = path, export_data_path = export_data_path)
+  STOPP_E3(path = path, export_data_path = export_data_path)
+  STOPP_E4(path = path, export_data_path = export_data_path)
+  STOPP_E5(path = path, export_data_path = export_data_path)
+  STOPP_E6(path = path, export_data_path = export_data_path)
+  STOPP_F1(path = path, export_data_path = export_data_path)
   STOPP_F4(path = path, export_data_path = export_data_path)
+  STOPP_G1(path = path, export_data_path = export_data_path)
+  STOPP_G3(path = path, export_data_path = export_data_path)
+  # STOPP_G4(path = path, export_data_path = export_data_path)
+  STOPP_H1(path = path, export_data_path = export_data_path)
+  STOPP_H2(path = path, export_data_path = export_data_path)
   STOPP_H3(path = path, export_data_path = export_data_path)
+  STOPP_H4(path = path, export_data_path = export_data_path)
+  STOPP_H5(path = path, export_data_path = export_data_path)
+  STOPP_H6(path = path, export_data_path = export_data_path)
+  STOPP_H7(path = path, export_data_path = export_data_path)
+  STOPP_H9(path = path, export_data_path = export_data_path)
+  STOPP_I1(path = path, export_data_path = export_data_path)
+  STOPP_J2(path = path, export_data_path = export_data_path)
+  STOPP_J4(path = path, export_data_path = export_data_path)
+  STOPP_J6(path = path, export_data_path = export_data_path)
+  STOPP_K1(path = path, export_data_path = export_data_path)
+  STOPP_K2(path = path, export_data_path = export_data_path)
+  STOPP_K3(path = path, export_data_path = export_data_path)
+  STOPP_K4(path = path, export_data_path = export_data_path)
+  STOPP_M1(path = path, export_data_path = export_data_path)
 }

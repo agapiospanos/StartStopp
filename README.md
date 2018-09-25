@@ -1,12 +1,14 @@
 StartStopp R Package
 ================
 
-[![Build Status](https://travis-ci.com/agapiospanos/StartStopp.svg?branch=master)](https://travis-ci.com/agapiospanos/StartStopp) <img src="man/figures/start-stopp-logo.png" width=500 style="margin: 0 auto; display: block;"/>
+[![Build Status](https://travis-ci.com/agapiospanos/StartStopp.svg?branch=master)](https://travis-ci.com/agapiospanos/StartStopp) <img src="man/figures/start-stopp-logo.png" width=400 align="right" style="margin-left:20px; margin-right: 20px;"/>
 
 Description
 -----------
 
-A package that provides patient data evaluation algorithm for the START and STOPP criteria. The patient data are parsed and their ids are classified based on whether the meet the conditions or not for each START and STOPP criterion. The package exports excel files that contains the patient ids and their status (1: if they fulfill the conditions for the criterion, 0: if they do not fulfill the conditions for the criterion and 2: if they have missing data). Furthermore if there are missing data on the input data the excel file specifies the column name of the input excel file that contains missing data.
+A package that provides patient data evaluation algorithm for the START and STOPP criteria. The patient data are parsed and their ids are classified based on whether the meet the conditions or not for each START and STOPP criterion.
+
+The package exports excel files that contains the patient ids and their status (1: if they fulfill the conditions for the criterion, 0: if they do not fulfill the conditions for the criterion and 2: if they have missing data). Furthermore if there are missing data on the input data the excel file specifies the column name of the input excel file that contains missing data.
 
 Till now the following START and STOPP criteria have been incorporated in the package.
 
@@ -43,8 +45,35 @@ STOPP
 -   STOPP D9
 -   STOPP D10
 -   STOPP D11
+-   STOPP D14
+-   STOPP E1
+-   STOPP E2
+-   STOPP E3
+-   STOPP E4
+-   STOPP E5
+-   STOPP E6
+-   STOPP F1
 -   STOPP F4
+-   STOPP G1
+-   STOPP G3
+-   STOPP G4
+-   STOPP H1
+-   STOPP H2
 -   STOPP H3
+-   STOPP H4
+-   STOPP H5
+-   STOPP H6
+-   STOPP H7
+-   STOPP H9
+-   STOPP I1
+-   STOPP J2
+-   STOPP J4
+-   STOPP J6
+-   STOPP K1
+-   STOPP K2
+-   STOPP K3
+-   STOPP K4
+-   STOPP M1
 
 Installation
 ------------

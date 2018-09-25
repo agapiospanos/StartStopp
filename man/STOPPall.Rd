@@ -2,7 +2,7 @@
 % Please edit documentation in R/STOPPall.R
 \name{STOPPall}
 \alias{STOPPall}
-\title{Evaluates the imported patients' data for the all the STOPP criteria at once.}
+\title{Evaluates the imported patients' data for all the STOPP criteria at once.}
 \usage{
 STOPPall(path, export_data_path)
 }
@@ -12,7 +12,7 @@ STOPPall(path, export_data_path)
 \item{export_data_path}{(Character) (optional) (default: working directory) the path for excel file output.}
 }
 \description{
-Evaluates the imported patients' data for the all the STOPP criteria at once.
+Evaluates the imported patients' data for all the STOPP criteria at once.
 }
 \author{
 Agapios Panos <panosagapios@gmail.com>

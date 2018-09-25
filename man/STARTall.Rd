@@ -2,7 +2,7 @@
 % Please edit documentation in R/STARTall.R
 \name{STARTall}
 \alias{STARTall}
-\title{Evaluates the imported patients' data for the all the START criteria at once.}
+\title{Evaluates the imported patients' data for all the START criteria at once.}
 \usage{
 STARTall(path, export_data_path)
 }
@@ -12,7 +12,7 @@ STARTall(path, export_data_path)
 \item{export_data_path}{(Character) (optional) (default: working directory) the path for excel file output.}
 }
 \description{
-Evaluates the imported patients' data for the all the START criteria at once.
+Evaluates the imported patients' data for all the START criteria at once.
 }
 \author{
 Agapios Panos <panosagapios@gmail.com>

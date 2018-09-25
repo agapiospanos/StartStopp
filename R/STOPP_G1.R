@@ -1,4 +1,4 @@
-#' Evaluates the imported patients' data for the STOPP H3 criterion.
+#' Evaluates the imported patients' data for the STOPP G1 criterion.
 #'
 #' @param path (Character) the path that the excel file can be read from.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
@@ -12,7 +12,7 @@
 #' @export
 
 
-STOPP_H3 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
+STOPP_G1<- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
   missing_data_patients <- list()
 
@@ -24,8 +24,6 @@ STOPP_H3 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
   # Importing the data
   data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod')
-  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_long_term')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod')
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -36,45 +34,15 @@ STOPP_H3 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
     pid <- names(sapply(pdata[i], names))
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
-      # checking for the conditions
-      if ( any(grepl('N02BE01|N02BE51|N02BE71', unlist(pdata[[i]][1]), ignore.case=T)) # checking unless condition N02BE01 OR N02BE51 OR N02BE71 in the med_gen_decod list
+      # checking for the unless condition
+      if ( any(grepl('^R03A|^R03BA|^R03B', unlist(pdata[[i]][1]), ignore.case=T)) # checking unless condition R03A* OR R03BA* OR R03B* in the med_gen__decod list
       ){
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
-
-        # get vectors of atc codes and long-term medicine variable of patient
-        patient_atc_codes <- unlist(pdata[[i]][1])
-        long_term <- unlist(pdata[[i]][2])
-
-        cond1 <- cond2 <- cond3 <- FALSE
-
-        index1 <- grep('^M01A', patient_atc_codes, ignore.case = T)
-        if (length(index1)>0) { # we get length of index because the grep returns an empty integer vector if the M01A* is not found.
-          if (as.numeric(long_term[index1]) == 1) { # checking if patient receives that medicine long-term
-            cond1 <- TRUE
-          }
-        }
-
-        index2 <- grep('^N02BA', patient_atc_codes, ignore.case = T)
-        if (length(index2)>0) { # we get length of index because the grep returns an empty integer vector if the N02BA* is not found.
-          if (as.numeric(long_term[index2]) == 1) { # checking if patient receives that medicine long-term
-            cond2 <- TRUE
-          }
-        }
-
-        index3 <- grep('^M01BA', patient_atc_codes, ignore.case = T)
-        if (length(index3)>0) { # we get length of index because the grep returns an empty integer vector if the M01BA* is not found.
-          if (as.numeric(long_term[index3]) == 1) { # checking if patient receives that medicine long-term
-            cond3 <- TRUE
-          }
-        }
-
         #checking if fulfills at least one primary condition AND at least one secondary condition
-        if (
-          ( cond1 | cond2 | cond3 ) & # AND between the primary and secondary conditions
-          any(grepl('^M15|^M16|^M17|^M18|^M19|^M47', unlist(pdata[[i]][3]), ignore.case=T)) # checking secondary condition M15* OR M16* OR M17* OR M18* OR M19* OR M47* in the ih_icd_10_decod list
-        ) {
+        if ( any(grepl('R03DA04', unlist(pdata[[i]][1]), ignore.case=T))) # checking primary condition R03DA04 in the med_gen_decod list
+        {
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
         } else {
@@ -94,11 +62,11 @@ STOPP_H3 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('STOPP H3: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  cat ('STOPP G1: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
 
   if (excel_out) {
     # export the evaluated list of patients to excel file
-    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/STOPP-H3.xlsx'), col_names = TRUE)
+    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/STOPP-G1.xlsx'), col_names = TRUE)
   }
 
   invisible (list(evaluated_patients)) # instead of return as we do not want to be printed

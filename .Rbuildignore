@@ -2,3 +2,4 @@
 ^\.Rproj\.user$
 ^LICENSE
 ^README.Rmd
+^.travis.yml

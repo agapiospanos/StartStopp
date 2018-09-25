@@ -1,4 +1,4 @@
-#' Evaluates the imported patients' data for the all the START criteria at once.
+#' Evaluates the imported patients' data for all the START criteria at once.
 #'
 #' @author
 #' Agapios Panos <panosagapios@gmail.com>
