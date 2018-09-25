@@ -119,4 +119,8 @@ STOPPall(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
 
 # similarly you can also run all the START criteria at once
 STARTall(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
+
+# you can also select the STOPP criteria you need to run at once using a vector. 
+# Note: you need to write the criteria with quotes using capital letters
+STOPPselected(selected=c("B13", "B1", "M1"), path = "~/patient_data.xlsx", export_data_path="~/Desktop")
 ```
