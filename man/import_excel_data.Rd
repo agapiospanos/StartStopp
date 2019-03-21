@@ -16,7 +16,7 @@ import_excel_data(current_data, path, worksheet, var_col,
 
 \item{var_col}{(Character) the column that stores the desired variable}
 
-\item{ignore_na}{(Boolean) (optional) (default: FALSE) a boolean variable that indicates whether to ignore any N/As found in excel (if set to FALSE) or to handle them as missing data (if set to TRUE).}
+\item{ignore_na}{(Boolean) (optional) (default: FALSE) a boolean variable that indicates whether to ignore any N/As found in excel (if set to TRUE) or to handle them as missing data (if set to FALSE).}
 
 \item{include_missing}{(Boolean) (optional) (default: FALSE) a boolean that indicated whether to include the missing values as NAs in the data to achieve one to one correspondance in the data if necessary.}
 }

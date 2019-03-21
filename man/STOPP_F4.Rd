@@ -4,7 +4,8 @@
 \alias{STOPP_F4}
 \title{Evaluates the imported patients' data for the STOPP F4 criterion.}
 \usage{
-STOPP_F4(path, excel_out = TRUE, export_data_path = getwd())
+STOPP_F4(path, excel_out = TRUE, export_data_path = NULL,
+  suppressNA = TRUE)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}
@@ -12,6 +13,8 @@ STOPP_F4(path, excel_out = TRUE, export_data_path = getwd())
 \item{excel_out}{(Boolean) (optional) (default: TRUE) output excel file with the evaluated data.}
 
 \item{export_data_path}{(Character) (optional) (default: working directory) the path for excel file output.}
+
+\item{suppressNA}{(Boolean) (optional) (default: TRUE) set this to FALSE if you want to know for which patients have NAs and for which variable. By default all NAs will be ignored so that the algorithm can distinguish between patients who meet the criterion and those who do not.}
 }
 \value{
 list of lists of evaluated patient ids categorized in 1) the ids that fulfill the criterion, 2) the ids that do not fulfill the criterion and 3) the ids that has missing data

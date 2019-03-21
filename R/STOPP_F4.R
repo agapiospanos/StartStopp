@@ -3,6 +3,7 @@
 #' @param path (Character) the path that the excel file can be read from.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
 #' @param export_data_path (Character) (optional) (default: working directory) the path for excel file output.
+#' @param suppressNA (Boolean) (optional) (default: TRUE) set this to FALSE if you want to know for which patients have NAs and for which variable. By default all NAs will be ignored so that the algorithm can distinguish between patients who meet the criterion and those who do not.
 #' @return list of lists of evaluated patient ids categorized in 1) the ids that fulfill the criterion, 2) the ids that do not fulfill the criterion and 3) the ids that has missing data
 #'
 #' @author
@@ -12,7 +13,7 @@
 #' @export
 
 
-STOPP_F4 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
+STOPP_F4 <- function(path, excel_out = TRUE, export_data_path = NULL, suppressNA = TRUE) {
 
   missing_data_patients <- list()
 
@@ -23,8 +24,8 @@ STOPP_F4 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   evaluated_patients <- data.frame(patients = character(0), status = numeric(0), missing_variables = character(0))
 
   # Importing the data
-  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 1, var_col = 'med_strength', include_missing = TRUE)
+  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 1, var_col = 'med_strength', include_missing = TRUE, ignore_na = suppressNA )
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -43,23 +44,29 @@ STOPP_F4 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
       cond1 <- cond2 <- cond3 <- FALSE
 
       index1 <- grep('B03AA02', patient_atc_codes, ignore.case = T)
-      if (length(index1)>0) { # we get length of index because the grep returns an empty integer vector if the B03AA02 is not found.
-        if (as.numeric(med_strength[index1]) > 600) { # checking if med_strength for this atc code is greater that 600
-          cond1 <- TRUE
+      if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA02 is not found.
+        med_strength1 <- as.numeric(med_strength[index1])
+        if (any(!is.na(med_strength1))) {
+          cond1 <- any(med_strength1 > 600) # checking if med_strength for this atc code is greater than 600
+          if (is.na(cond1)) cond1 <- FALSE # to catch the case that one of the med_strength values is NA and all are lower than 600 (eg. c(100, NA))
         }
       }
 
       index2 <- grep('B03AA07', patient_atc_codes, ignore.case = T)
-      if (length(index2)>0) { # we get length of index because the grep returns an empty integer vector if the B03AA07 is not found.
-        if (as.numeric(med_strength[index2]) > 600) { # checking if med_strength for this atc code is greater that 600
-          cond2 <- TRUE
+      if (length(index2) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA07 is not found.
+        med_strength2 <- as.numeric(med_strength[index2])
+        if (any(!is.na(med_strength2))) {
+          cond2 <- any(med_strength2 > 600) # checking if med_strength for this atc code is greater than 600
+          if (is.na(cond2)) cond2 <- FALSE # to catch the case that one of the med_strength values is NA and all other values are lower than 600 (eg. c(100, NA))
         }
       }
 
       index3 <- grep('B03AA03', patient_atc_codes, ignore.case = T)
-      if (length(index3)>0) { # we get length of index because the grep returns an empty integer vector if the B03AA03 is not found.
-        if (as.numeric(med_strength[index3]) > 1800) { # checking if med_strength for this atc code is greater that 1800
-          cond3 <- TRUE
+      if (length(index3) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA03 is not found.
+        med_strength3 <- as.numeric(med_strength[index3])
+        if (any(!is.na(med_strength3))) {
+          cond3 <- any(med_strength3 > 1800) # checking if med_strength for this atc code is greater than 1800
+          if (is.na(cond3)) cond3 <- FALSE # to catch the case that one of the med_strength and all other values are lower than 1800 (eg. c(100, NA))
         }
       }
 
@@ -84,7 +91,11 @@ STOPP_F4 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('STOPP F4: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  if (suppressNA) {
+    cat('STOPP F4: ', fulfill_count, 'patients out of', total_count + missing_count, 'patients meet the criterion.\n')
+  } else {
+    cat('STOPP F4: ', fulfill_count, 'patients out of', total_count, 'patients meet the criterion.', missing_count, 'patients have missing data. \n')
+  }
 
   if (excel_out) {
     # export the evaluated list of patients to excel file

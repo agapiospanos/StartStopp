@@ -4,7 +4,7 @@
 #' @param path (Character) the path that the excel file can be read from.
 #' @param worksheet (Character) the worksheet that the desired variable is stored in.
 #' @param var_col (Character) the column that stores the desired variable
-#' @param ignore_na (Boolean) (optional) (default: FALSE) a boolean variable that indicates whether to ignore any N/As found in excel (if set to FALSE) or to handle them as missing data (if set to TRUE).
+#' @param ignore_na (Boolean) (optional) (default: FALSE) a boolean variable that indicates whether to ignore any N/As found in excel (if set to TRUE) or to handle them as missing data (if set to FALSE).
 #' @param include_missing (Boolean) (optional) (default: FALSE) a boolean that indicated whether to include the missing values as NAs in the data to achieve one to one correspondance in the data if necessary.
 #' @return list of [[1]] patient data for the specified variable. [[2]] missing patient id and variable name as specified in excel that we used to import data.
 #'
@@ -17,6 +17,12 @@ import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=
 
   # specify the excel file location and worksheet
   sheet <- read_excel(path, worksheet)
+
+  # stop execution and display error if the column name specified in var_col variable does not exist.
+  if (!var_col %in% colnames(sheet)){
+    cat('An error occured while trying to parse data. Column ', var_col, ' not found at excel file you used to get data from. Please add data for this column or exclude this criterion.')
+    stop('The specified column name ', var_col, ' is not present in the excel file that you tried to import... Please make sure you have correctly set the column names in the excel file')
+  }
 
   # ordering the sheet in ascending order by the specified column. Necessary for the proper parsing of the patient data as the algorithm expects the sheet data to be ordered and parses it in a serial way.
   sheet <- sheet[order(unlist(sheet['usubjid'])),]

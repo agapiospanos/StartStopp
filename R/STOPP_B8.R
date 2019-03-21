@@ -1,8 +1,9 @@
 #' Evaluates the imported patients' data for the STOPP B8 criterion.
 #'
-#' @param path (Character) the path that the excel file can be read from.
+#' @param path (Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
-#' @param export_data_path (Character) (optional) (default: working directory) the path for excel file output.
+#' @param export_data_path (Character) (optional) (default: NULL (a popup message to choose dir will be displayed)) the path for excel file output.
+#' @param suppressNA (Boolean) (optional) (default: TRUE) set this to FALSE if you want to know for which patients have NAs and for which variable. By default all NAs will be ignored so that the algorithm can distinguish between patients who meet the criterion and those who do not.
 #' @return list of lists of evaluated patient ids categorized in 1) the ids that fulfill the criterion, 2) the ids that do not fulfill the criterion and 3) the ids that has missing data
 #'
 #' @author
@@ -12,7 +13,15 @@
 #' @export
 
 
-STOPP_B8 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
+STOPP_B8 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, suppressNA = TRUE) {
+
+  # check the imported file for its extension and display file choose window in case the path variable is NA
+  path<-chk_file(path)
+
+  # choose path for the exported files
+  if (excel_out) {
+    export_data_path <- choose_export_path(export_data_path)
+  }
 
   missing_data_patients <- list()
 
@@ -23,12 +32,12 @@ STOPP_B8 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   evaluated_patients <- data.frame(patients = character(0), status = numeric(0), missing_variables = character(0))
 
   # Importing the data
-  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_pot')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_sod')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_cal')
+  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', include_missing = suppressNA, ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
+  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_pot', ignore_na = TRUE, include_missing = TRUE)
+  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_sod', ignore_na = TRUE, include_missing = TRUE)
+  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_cal', ignore_na = TRUE, include_missing = TRUE)
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -40,18 +49,32 @@ STOPP_B8 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){ # checking if missing_data_patients contain pid
 
-      pot <- unlist(pdata[[i]][4])
-      sod <- unlist(pdata[[i]][5])
-      cal <- unlist(pdata[[i]][6])
+      if (is.na(unlist(pdata[[i]][4]))){
+        cp_pot_cond <- FALSE
+      } else {
+        cp_pot_cond <- as.numeric(unlist(pdata[[i]][4])) < 3
+      }
+
+      if (is.na(unlist(pdata[[i]][5]))){
+        cp_sod_cond <- FALSE
+      } else {
+        cp_sod_cond <- as.numeric(unlist(pdata[[i]][5])) < 130
+      }
+
+      if (is.na(unlist(pdata[[i]][6]))){
+        cp_cal_cond <- FALSE
+      } else {
+        cp_cal_cond <- as.numeric(unlist(pdata[[i]][6])) > 2.65
+      }
 
       # checking if fulfills at least one primary condition
       if ( ( any(grepl('^C07B|^C03BA|^C03A|C09XA52|C09XA54|C03EA01|C03EA02|C03EA07|C03EA13|C09DX01|C09DX03|^C07D', unlist(pdata[[i]][1]), ignore.case=T)) # checking primary condition C07B* OR C03BA* OR C03A* OR C09XA52 OR C09XA54 OR C03EA01 OR C03EA02 OR C03EA07 OR C03EA13 OR C09DX01 OR C07D* in the med_gen_decod list
             ) & ( # AND between the primary and secondary conditions
               any(grepl('E87.6|E87.1|E83.5|^M10', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition E87.5 OR E87.1 OR E83.5 OR M10* in the ih_icd_10_decod list
               any(grepl('E87.6|E87.1|E83.5|^M10', unlist(pdata[[i]][3]), ignore.case=T)) | # checking secondary condition E87.5 OR E87.1 OR E83.5 OR M10* in the h_icd_10_decod list
-              (length( as.numeric(pot)) > 0 && as.numeric(unlist(pdata[[i]][4])) < 3)  | # checking if cp_pot (K+) < 3
-              (length( as.numeric(unlist(pdata[[i]][5]))) > 0 && as.numeric(unlist(pdata[[i]][5])) < 130) | # checking if cp_sod (Na+) < 130
-              (length( as.numeric(unlist(pdata[[i]][6]))) > 0 && as.numeric(unlist(pdata[[i]][6])) > 2.65)  # checking if cp_cal (Ca++) > 2.65
+              cp_pot_cond | # checking if cp_pot (K+) < 3
+              cp_sod_cond | # checking if cp_sod (Na+) < 130
+              cp_cal_cond   # checking if cp_cal (Ca++) > 2.65
             )
       ) {
         # inserting the record to the data.frame evaluated_patients with status 1
@@ -74,7 +97,11 @@ STOPP_B8 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('STOPP B8: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  if (suppressNA) {
+    cat('STOPP B8: ', fulfill_count, 'patients out of', total_count + missing_count, 'patients meet the criterion.\n')
+  } else {
+    cat('STOPP B8: ', fulfill_count, 'patients out of', total_count, 'patients meet the criterion.', missing_count, 'patients have missing data. \n')
+  }
 
   if (excel_out) {
     # export the evaluated list of patients to excel file

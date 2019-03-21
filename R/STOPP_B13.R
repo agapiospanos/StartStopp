@@ -1,8 +1,9 @@
 #' Evaluates the imported patients' data for the STOPP B13 criterion.
 #'
-#' @param path (Character) the path that the excel file can be read from.
+#' @param path (Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
-#' @param export_data_path (Character) (optional) (default: working directory) the path for excel file output.
+#' @param export_data_path (Character) (optional) (default: NULL (a popup message to choose dir will be displayed)) the path for excel file output.
+#' @param suppressNA (Boolean) (optional) (default: TRUE) set this to FALSE if you want to know for which patients have NAs and for which variable. By default all NAs will be ignored so that the algorithm can distinguish between patients who meet the criterion and those who do not.
 #' @return list of lists of evaluated patient ids categorized in 1) the ids that fulfill the criterion, 2) the ids that do not fulfill the criterion and 3) the ids that has missing data
 #'
 #' @author
@@ -12,7 +13,15 @@
 #' @export
 
 
-STOPP_B13 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
+STOPP_B13 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, suppressNA = TRUE) {
+
+  # check the imported file for its extension and display file choose window in case the path variable is NA
+  path<-chk_file(path)
+
+  # choose path for the exported files
+  if (excel_out) {
+    export_data_path <- choose_export_path(export_data_path)
+  }
 
   missing_data_patients <- list()
 
@@ -23,8 +32,9 @@ STOPP_B13 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   evaluated_patients <- data.frame(patients = character(0), status = numeric(0), missing_variables = character(0))
 
   # Importing the data
-  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod')
-  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod')
+  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', include_missing = suppressNA, ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -38,6 +48,7 @@ STOPP_B13 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
       #checking if fulfills at least one primary condition AND at least one secondary condition
       if ( any(grepl('G04BE03|G04BE08|G04BE09|G04BE10', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition G04BE03 OR G04BE08 OR G04BE09 OR G04BE10 in the med_gen_decod list
            ( any(grepl('^I55|I11.0|I13.0|I13.2', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition I55* OR I11.0 OR I13.0 OR I13.2 in the ih_icd10__decod list
+             any(grepl('^I55|I11.0|I13.0|I13.2', unlist(pdata[[i]][3]), ignore.case=T)) | # checking secondary condition I55* OR I11.0 OR I13.0 OR I13.2 in the h_icd10__decod list
              any(grepl('^C01DA', unlist(pdata[[i]][1]), ignore.case=T)) # checking secondary condition C01DA* in the med_gen_decod list
            )
       ) {
@@ -59,7 +70,11 @@ STOPP_B13 <- function(path, excel_out = TRUE, export_data_path=getwd()) {
   missing_count <- length(which(evaluated_patients$status == 2))
 
   # printing results to the console
-  cat ('STOPP B13: ', fulfill_count, 'patients out of', total_count, 'patients fulfill the criterion.', missing_count, 'patients have missing data. \n')
+  if (suppressNA) {
+    cat('STOPP B13: ', fulfill_count, 'patients out of', total_count + missing_count, 'patients meet the criterion.\n')
+  } else {
+    cat('STOPP B13: ', fulfill_count, 'patients out of', total_count, 'patients meet the criterion.', missing_count, 'patients have missing data. \n')
+  }
 
   if (excel_out) {
     # export the evaluated list of patients to excel file

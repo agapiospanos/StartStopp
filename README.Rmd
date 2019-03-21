@@ -20,7 +20,38 @@ Till now the following START and STOPP criteria have been incorporated in the pa
 START
 
 - START A1
+- START A2
+- START A3
+- START A4
+- START A5
+- START A6
+- START A7
+- START A8
+- START B1
+- START B2
+- START B3
+- START C1
+- START C2
+- START C3
+- START C4
+- START C5
+- START C6
+- START D1
+- START D2
+- START E1
 - START E2
+- START E3
+- START E4
+- START E5
+- START E6
+- START E7
+- START F1
+- START G1
+- START G2
+- START G3
+- START H1
+- START H2
+- START I2
 
 STOPP
 
@@ -34,22 +65,33 @@ STOPP
 - STOPP B8
 - STOPP B9
 - STOPP B10
+- STOPP B11
+- STOPP B12
 - STOPP B13
 - STOPP C1
 - STOPP C2
 - STOPP C3
+- STOPP C4
+- STOPP C5
+- STOPP C6
 - STOPP C7
+- STOPP C8
+- STOPP C9
 - STOPP C10
 - STOPP C11
 - STOPP D1
 - STOPP D2
 - STOPP D3
+- STOPP D4
 - STOPP D5
 - STOPP D6
 - STOPP D7
+- STOPP D8
 - STOPP D9
 - STOPP D10
 - STOPP D11
+- STOPP D12
+- STOPP D13
 - STOPP D14
 - STOPP E1
 - STOPP E2
@@ -58,8 +100,11 @@ STOPP
 - STOPP E5
 - STOPP E6
 - STOPP F1
+- STOPP F2
+- STOPP F3
 - STOPP F4
 - STOPP G1
+- STOPP G2
 - STOPP G3
 - STOPP G4
 - STOPP H1
@@ -69,15 +114,22 @@ STOPP
 - STOPP H5
 - STOPP H6
 - STOPP H7
+- STOPP H8
 - STOPP H9
 - STOPP I1
+- STOPP I2
+- STOPP J1
 - STOPP J2
+- STOPP J3
 - STOPP J4
+- STOPP J5
 - STOPP J6
 - STOPP K1
 - STOPP K2
 - STOPP K3
 - STOPP K4
+- STOPP L1
+- STOPP L2
 - STOPP M1
 
 ## Installation
@@ -86,7 +138,7 @@ The package is still under active development and has not been submitted to the 
 
 You can install the **StartStopp** package from GitHub repository as follows:
 
-Installation using R package **[devtools](https://cran.r-project.org/package=devtools)** (with [Rtools](https://cran.r-project.org/bin/windows/Rtools/) for Windows):
+Installation using R package **[devtools](https://cran.r-project.org/package=devtools)**:
 
 ```{r, eval=FALSE}
 install.packages("devtools")
@@ -97,30 +149,48 @@ devtools::install_github("agapiospanos/StartStopp")
 
 I will soon provide an excel file as a template for the input data format.
 
-## Usage example
+## Basic usage examples
 
-Provided that you have the input data in the format specifed above you can use the package by calling any of the criteria functions. For example to evaluate the data for the STOPP B6 criterion you can call the following function.
+Provided that you have the input data in the format specifed above you can use the package by calling any of the criteria functions. For example to evaluate the data for the STOPP B6 criterion you can call the following function. Calling this function, a popup window will appear to choose the excel file that contains the patient data. Then another popup window will be displayed to choose a folder that the excel file will be exported.
 
 ```{r, eval=FALSE}
-# this function will import the patient data from the file specified in path argument 
-# and then export an excel file that contains the evaluated data at the working directory
-STOPP_B6(path = "~/patient_data.xlsx")
+STOPP_B6()
+```
 
-# you can also specify the export data path by including the argument export_data_path
+You can also get a single excel file for all the STOPP or START criteria using the commands below:
+
+```{r, eval=FALSE}
+STARTall()
+STOPPall()
+```
+
+## Advanced usage examples
+
+You can exclude some criteria from running when calling STARTall() and STOPPall() functions by using the exclude argument. Use a vector in the form shown below to specify the criteria you want to exclude.
+NOTE: You have to use capital letters in the vector for the exclude argument as shown below.
+
+```{r, eval=FALSE}
+STOPPall(exclude = c("B12", "G4"))
+```
+
+You can also make the STARTall() and STOPPall() functions export single excel files for each criterion. Just add the single_excel = FALSE argument as shown below:
+
+```{r, eval=FALSE}
+STOPPall(single_excel = FALSE)
+```
+
+You can avoid all the popup windows for choosing the export path and the excel file to read data from. Just specify them using the below arguments. This arguments work for a single criterion as well as for the STARTall() and STOPPall() functions.
+
+```{r, eval=FALSE}
 STOPP_B6(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
-
-# if you do not wish to have an excel file exported and you prefer to have the data assigned 
-# to a variable you can also omit the export by using the excel_out = FALSE
-output <- STOPP_B6(path = "~/patient_data.xlsx", excel_out = FALSE)
-
-# you can also run all the STOPP criteria at once. Note that this will generate many excel files in
-# the specified destination path
 STOPPall(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
-
-# similarly you can also run all the START criteria at once
 STARTall(path = "~/patient_data.xlsx", export_data_path="~/Desktop")
+```
 
-# you can also select the STOPP criteria you need to run at once using a vector. 
-# Note: you need to write the criteria with quotes using capital letters
-STOPPselected(selected=c("B13", "B1", "M1"), path = "~/patient_data.xlsx", export_data_path="~/Desktop")
+You can evaluate multiple START or STOPP criteria at once using the STARTselected and STOPPselected criteria. All the arguments of STARTall and STOPPall function also apply to the STARTselected and STOPPselected. You must provide the selected START and STOPP criteria in a vector form using the selected argument.
+NOTE: You have to use capital letters in the vector for the selected argument as shown below.
+
+```{r, eval=FALSE}
+STOPPselected(selected=c("B13", "B1", "M1"))
+STARTselected(selected=c("A2", "E5", "E7"))
 ```

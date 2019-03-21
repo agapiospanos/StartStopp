@@ -1,3 +1,17 @@
+***StartStopp, version 1.0.0 ***
+
+- first release of all criteria for testing
+
+***StartStopp, version 0.3.0 ***
+
+- added option to ignore any NAs and evaluate the rest data (see supressNA argument)
+- added option to generate a single excel file when running STARTselected, STARTall, STOPPselected, STOPPall (see single_excel argument)
+
+***StartStopp, version 0.2.0 ***
+
+- added 31 more START criteria
+- modified START E2 criterion (added meg_long_term variable in the check)
+
 ***StartStopp, version 0.1.3 ***
 
 - added 16 more STOPP criteria
