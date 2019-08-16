@@ -5,7 +5,8 @@
 \title{Evaluates the imported patients' data for all the STOPP criteria at once.}
 \usage{
 STOPPall(path = NULL, exclude = NULL, excel_out = TRUE,
-  single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE)
+  single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE,
+  returnData = FALSE)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}
@@ -19,6 +20,11 @@ STOPPall(path = NULL, exclude = NULL, excel_out = TRUE,
 \item{export_data_path}{(Character) (optional) (default: NULL (a popup message to choose dir will be displayed)) the path for excel file output.}
 
 \item{suppressNA}{(Boolean) (optional) (default: TRUE) set this to FALSE if you want to know for which patients have NAs and for which variable. By default all NAs will be ignored so that the algorithm can distinguish between patients who meet the criterion and those who do not.}
+
+\item{returnData}{(Boolean) (optional) (default: FALSE) set this to TRUE if you want to have data returned in a data frame format.}
+}
+\value{
+NULL or data.frame. Returns the evaluated data for each criterion if you set the returnData argument to TRUE. By default it does not return anything.
 }
 \description{
 Evaluates the imported patients' data for all the STOPP criteria at once.

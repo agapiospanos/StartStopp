@@ -10,13 +10,16 @@
 #' @param single_excel (Boolean) (optional) (default: TRUE) if true outputs only 1 excel file with multiple columns instead of multiple files (one for each criterion)
 #' @param export_data_path (Character) (optional) (default: NULL (a popup message to choose dir will be displayed)) the path for excel file output.
 #' @param suppressNA (Boolean) (optional) (default: TRUE) set this to FALSE if you want to know for which patients have NAs and for which variable. By default all NAs will be ignored so that the algorithm can distinguish between patients who meet the criterion and those who do not.
+#' @param returnData (Boolean) (optional) (default: FALSE) set this to TRUE if you want to have data returned in a data frame format.
 #'
 #' @importFrom writexl write_xlsx
 #' @importFrom stats setNames
 #'
+#' @return NULL or data.frame. Returns the evaluated data for each criterion if you set the returnData argument to TRUE. By default it does not return anything.
+#'
 #' @export
 
-STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_out = TRUE, single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE) {
+STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_out = TRUE, single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE, returnData = FALSE) {
 
   # check the imported file for its extension and display file choose window in case the path variable is NA
   path<-chk_file(path)
@@ -790,9 +793,14 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(m1)$status)
   }
 
-  if (single_excel){
+  final_data <- setNames(final_data, final_data_colnames)
+
+  if (single_excel) {
     # generate the single excel file containing all criteria
-    final_data <- setNames(final_data, final_data_colnames)
     write_xlsx(final_data, path = paste0( export_data_path, '/STOPP_critetia.xlsx'), col_names = TRUE)
+  }
+
+  if (returnData) {
+    return (final_data)
   }
 }

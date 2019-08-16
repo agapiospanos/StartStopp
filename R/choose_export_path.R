@@ -12,7 +12,7 @@
 choose_export_path <- function(export_data_path = NULL, suppressNA = TRUE){
   # checking if the user specified an export.path argument. If not, a prompt window will be displayed to ask for a path.
   if (is.null(export_data_path)) {
-    cat('Please choose a folder to export the Word Document...', '\n')
+    cat('Please choose a folder to export the Excel file.', '\n')
     export_data_path <- choose_dir()
   }
 
