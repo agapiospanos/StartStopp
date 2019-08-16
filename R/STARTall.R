@@ -18,7 +18,7 @@
 
 STARTall <- function(path = NULL, exclude = NULL, excel_out = TRUE, single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE, returnData = FALSE) {
 
-  output <- STARTselected(selected = "all", exclude, path, excel_out, single_excel, export_data_path, suppressNA)
+  output <- STARTselected(selected = "all", exclude, path, excel_out, single_excel, export_data_path, suppressNA, returnData)
 
   if (returnData) {
     return(output)

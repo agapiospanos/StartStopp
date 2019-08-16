@@ -34,7 +34,7 @@ STARTSTOPPbycategory <- function (path = NULL, STARTexclude = NULL, STOPPexclude
 
   underuse <- c( 'START A1', 'START A2', 'START A3', 'START A4', 'START A5', 'START A6', 'START A7', 'START A8', 'START B1', 'START B2', 'START B3', 'START C1', 'START C2', 'START C3', 'START C4',
                  'START C5', 'START C6', 'START D1', 'START D2', 'START E1', 'START E2', 'START E3', 'START E4', 'START E5', 'START E6', 'START E7', 'START F1', 'START G1', 'START G2', 'START G3',
-                 'START H1', 'START H2', 'START I1', 'START I2' )
+                 'START H1', 'START H2', 'START I2' )
 
   if (length(STOPPexclude) > 0) {
     for (i in 1:length(STOPPexclude)) {
