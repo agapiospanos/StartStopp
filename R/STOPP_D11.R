@@ -49,9 +49,10 @@ STOPP_D11 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
 
       cp_hr_cond <- FALSE
       cp_hr <- as.numeric(unlist(pdata[[i]][4]))
+      cp_hr <- cp_hr[!is.na(cp_hr)]
 
-      if (!is.na(cp_hr)){
-        cp_hr_cond <- cp_hr < 50 # checking if heart rate is bellow 50
+      if (length(cp_hr) > 0){
+        cp_hr_cond <- any(cp_hr < 50) # checking if heart rate is bellow 50
       }
 
       #checking if fulfills at least one primary condition AND at least one secondary condition

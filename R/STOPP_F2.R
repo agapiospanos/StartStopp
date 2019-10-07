@@ -119,42 +119,20 @@ STOPP_F2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
   invisible (list(evaluated_patients)) # instead of return as we do not want to be printed
 }
 
-# helper function to remove all NA values from the daily dosage and med long term variables
-stripNA <- function(index, med, daily) {
-  # getting indexes that refer to NA values
-  daily_na_index <- which(is.na(as.numeric(daily[index])))
-  # excluding these indexes that refer to NA values
-  if (length(daily_na_index) > 0) {
-    index <- index[-daily_na_index]
-  }
-
-  # getting indexes that refer to NA values
-  med_na_index <- which(is.na(as.numeric(med[index])))
-  # excluding these indexes that refer to NA values
-  if (length(med_na_index) > 0) {
-    index <- index[-med_na_index]
-  }
-
-  # getting the daily_dosage and med_long_term for the rest of the indexes that do not refer to NA values
-  daily_out <- as.numeric(daily[index])
-  med_out <- as.numeric(med[index])
-
-  return(list(daily_out, med_out))
-}
-
 # helper function to evaluate condition and return TRUE or FALSE
 eval_cond <- function(index, med_long_term, daily_dosage, dosage_limit) {
 
   cond1 <- FALSE
 
-  without_na <- stripNA(index, med_long_term, daily_dosage)
-  daily_dosage1 <- without_na[[1]]
-  med_long_term1 <- without_na[[2]]
+  daily_dosage1 <- as.numeric(unlist(daily_dosage[index]))
+  daily_dosage1 <- daily_dosage1[!is.na(daily_dosage1)]
+
+  med_long_term1 <- as.numeric(unlist(med_long_term[index]))
+  med_long_term1 <- med_long_term1[!is.na(med_long_term1)]
 
   if (length(daily_dosage1) > 0 & length(med_long_term1) > 0) {
-    if (!is.na(daily_dosage1) & !is.na(med_long_term1)) {
-      cond1 <- daily_dosage1 > dosage_limit & med_long_term1 == 1 # checking daily dosage AND med long term for this atc code
-    }
+    cond1 <- any(daily_dosage1 > dosage_limit) & any(med_long_term1 == 1) # checking daily dosage AND med long term for this atc code
   }
+
   return(cond1)
 }

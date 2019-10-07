@@ -57,15 +57,17 @@ START_B3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       # checking if fulfills at least one set of primary condition AND secondary condition
 
         cp_po <- as.numeric(unlist(pdata[[i]][2]))
+        cp_po <- cp_po[!is.na(cp_po)]
+
         cp_po_unit <- unlist(pdata[[i]][3])
 
-        if (!is.na(cp_po) & !is.na(cp_po_unit)){
+        if (length(cp_po) > 0 & length(cp_po_unit) > 0){
           if (grepl('kPA', cp_po_unit, ignore.case = T)) { # using grepl so that we can evaluate the unit in a case insensitive way
-            cp_po_cond <- cp_po < 8
+            cp_po_cond <- any(cp_po < 8)
           } else if (grepl('mmHg', cp_po_unit, ignore.case = T)) {
-            cp_po_cond <- cp_po < 60
+            cp_po_cond <- any(cp_po < 60)
           } else {
-            cat('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion', '\n')
+            warning('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion', '\n')
             cp_po_cond <- FALSE
           }
         } else { # if we have missing in cp_po
@@ -73,13 +75,13 @@ START_B3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         }
 
         cp_os <- as.numeric(unlist(pdata[[i]][4]))
+        cp_os <- cp_os[!is.na(cp_os)]
 
-        if (!is.na(cp_os)) {
-          cp_os_cond <- cp_os < 89
+        if (length(cp_os) > 0) {
+          cp_os_cond <- any(cp_os < 89)
         } else {
           cp_os_cond <- FALSE
         }
-
 
         if (
              any(grepl('R09.0|J95.1|J95.2|J95.3|^J96', unlist(pdata[[i]][5]), ignore.case=T)) | # checking for primary conditions R09.0 OR J95.1 OR J95.2 OR J95.3 OR J96* in the ih_icd10__decod list

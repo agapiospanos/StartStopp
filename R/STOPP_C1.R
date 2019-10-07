@@ -54,21 +54,21 @@ STOPP_C1 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       index1 <- grep('B01AC06', patient_atc_codes, ignore.case = T)
       if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the B01AC06 is not found.
 
-        daily_dosage_single <- as.numeric(daily_dosage[index1])
+        daily_dosage_single <- as.numeric(unlist(daily_dosage[index1]))
+        daily_dosage_single <- daily_dosage_single[!is.na(daily_dosage_single)]
 
-        if (any(!is.na(daily_dosage_single))) {
-          cond1 <- any(as.numeric(daily_dosage[index1]) > 160)  # checking if daily_dosage for this atc code is greater than 160
-          if (is.na(cond1)) cond1 <- FALSE # to catch the case that one of the daily_dosage_single values is NA and all other values are lower than 160, (eg. c(100, NA))
+        if (length(daily_dosage_single) > 0) {
+          cond1 <- any(daily_dosage_single > 160)  # checking if daily_dosage for this atc code is greater than 160
         }
       }
 
       index2 <- grep('B01AC08', patient_atc_codes, ignore.case = T)
       if (length(index2) > 0) { # we get length of index because the grep returns an empty integer vector if the B01AC08 is not found.
-        daily_dosage_single <- as.numeric(daily_dosage[index2])
+        daily_dosage_single <- as.numeric(unlist(daily_dosage[index2]))
+        daily_dosage_single <- daily_dosage_single[!is.na(daily_dosage_single)]
 
-        if (any(!is.na(daily_dosage_single))) {
-          cond2 <- any(as.numeric(daily_dosage[index2]) > 200)  # checking if daily_dosage for this atc code is greater than 200
-          if (is.na(cond2)) cond2 <- FALSE # to catch the case that one of the daily_dosage_single values is NA and all other values are lower than 200, (eg. c(100, NA))
+        if (length(daily_dosage_single) > 0) {
+          cond2 <- any(daily_dosage_single > 200)  # checking if daily_dosage for this atc code is greater than 200
         }
       }
 

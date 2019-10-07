@@ -65,23 +65,37 @@ STOPP_C8 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         patient_h_codes <- unlist(pdata[[i]][4])
         patient_ih_codes <- unlist(pdata[[i]][2])
         patient_icd10_dates <- unlist(pdata[[i]][3])
+
         patient_fup2m_dates <- unlist(pdata[[i]][5])
+        patient_fup2m_dates <- patient_fup2m_dates[!is.na(patient_fup2m_dates)]
 
         index1 <- grep('I80.2', patient_ih_codes, ignore.case = T)
         if (length(index1)>0) { # we get length of index because the grep returns an empty integer vector if the I80.2 is not found.
-          if (any(!is.na(patient_icd10_dates[index1])) & any(!is.na(patient_fup2m_dates))) {
 
-            months_interval <- as.numeric(as.period(interval(as.POSIXct(patient_icd10_dates[index1], format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")), as.POSIXct(patient_fup2m_dates, format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")))), "months")
-            months_interval_cond1 <- any(months_interval > 6)
+          icd10_dates_single <- unlist(patient_icd10_dates[index1])
+          icd10_dates_single <- icd10_dates_single[!is.na(icd10_dates_single)]
+
+          if (length(icd10_dates_single) > 0 & length(patient_fup2m_dates) > 0) {
+
+            months_interval <- as.numeric(as.period(interval(as.POSIXct(icd10_dates_single, format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")), as.POSIXct(patient_fup2m_dates, format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")))), "months")
+            if (length((months_interval)) > 0) {
+              months_interval_cond1 <- any(months_interval > 6)
+            }
           }
         }
 
         index2 <- grep('I80.2', patient_h_codes, ignore.case = T)
         if (length(index2)>0) { # we get length of index because the grep returns an empty integer vector if the I80.2 is not found.
-          if (any(!is.na(patient_icd10_dates[index2])) & any(!is.na(patient_fup2m_dates))) {
 
-            months_interval <- as.numeric(as.period(interval(as.POSIXct(patient_icd10_dates[index2], format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")), as.POSIXct(patient_fup2m_dates, format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")))), "months")
-            months_interval_cond2 <- any(months_interval > 6)
+          icd10_dates_single <- unlist(patient_icd10_dates[index2])
+          icd10_dates_single <- icd10_dates_single[!is.na(icd10_dates_single)]
+
+          if (length(icd10_dates_single) > 0 & length(patient_fup2m_dates) > 0) {
+
+            months_interval <- as.numeric(as.period(interval(as.POSIXct(icd10_dates_single, format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")), as.POSIXct(patient_fup2m_dates, format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1")))), "months")
+            if (length((months_interval)) > 0) {
+              months_interval_cond2 <- any(months_interval > 6)
+            }
           }
         }
 

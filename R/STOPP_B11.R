@@ -46,10 +46,12 @@ STOPP_B11 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){ # checking if missing_data_patients contain pid
 
-      if (is.na(unlist(pdata[[i]][4]))){
-        cp_pot_cond <- FALSE
-      } else {
-        cp_pot_cond <- as.numeric(unlist(pdata[[i]][4])) > 5
+      cp_pot_cond <- FALSE
+      cp_pot <- as.numeric(unlist(pdata[[i]][4]))
+      cp_pot <- cp_pot[!is.na(cp_pot)]
+
+      if (length(cp_pot) > 0){
+        cp_pot_cond <- any(cp_pot > 5)
       }
 
       # checking if fulfills at least one primary condition

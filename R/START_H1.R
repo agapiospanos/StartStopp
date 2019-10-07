@@ -62,8 +62,9 @@ START_H1 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
         index <- grep('N02BE01', patient_atc_codes, ignore.case = T)
         if (length(index) > 0) { # we get length of index because the grep returns an empty integer vector if the B01AC06 is not found.
-          daily_dosage_single <- as.numeric(daily_dosage[index])
-          if (any(!is.na(daily_dosage_single))) {
+          daily_dosage_single <- as.numeric(unlist(daily_dosage[index]))
+          daily_dosage_single <- daily_dosage_single[!is.na(daily_dosage_single)]
+          if (length(daily_dosage_single) > 0) {
             daily_dosage_cond <- any(daily_dosage_single > 2.9) # checking if daily_dosage for this atc code is greater than 2.9
           }
         }

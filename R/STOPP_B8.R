@@ -49,22 +49,27 @@ STOPP_B8 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){ # checking if missing_data_patients contain pid
 
-      if (is.na(unlist(pdata[[i]][4]))){
-        cp_pot_cond <- FALSE
-      } else {
-        cp_pot_cond <- as.numeric(unlist(pdata[[i]][4])) < 3
+      cp_pot_cond <- cp_sod_cond <- cp_cal_cond <- FALSE
+
+      cp_pot <- as.numeric(unlist(pdata[[i]][4]))
+      cp_pot <- cp_pot[!is.na(cp_pot)]
+
+      cp_sod <- as.numeric(unlist(pdata[[i]][5]))
+      cp_sod <- cp_sod[!is.na(cp_sod)]
+
+      cp_cal <- as.numeric(unlist(pdata[[i]][6]))
+      cp_cal <- cp_cal[!is.na(cp_cal)]
+
+      if (length(cp_pot) > 0){
+        cp_pot_cond <- any(cp_pot < 3)
       }
 
-      if (is.na(unlist(pdata[[i]][5]))){
-        cp_sod_cond <- FALSE
-      } else {
-        cp_sod_cond <- as.numeric(unlist(pdata[[i]][5])) < 130
+      if (length(cp_sod) > 0){
+        cp_sod_cond <- any(cp_sod < 130)
       }
 
-      if (is.na(unlist(pdata[[i]][6]))){
-        cp_cal_cond <- FALSE
-      } else {
-        cp_cal_cond <- as.numeric(unlist(pdata[[i]][6])) > 2.65
+      if (length(cp_cal) > 0){
+        cp_cal_cond <- any(cp_cal > 2.65)
       }
 
       # checking if fulfills at least one primary condition

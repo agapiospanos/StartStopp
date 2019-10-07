@@ -45,9 +45,10 @@ STOPP_J1 <- function(path, excel_out = TRUE, export_data_path = NULL, suppressNA
 
       index1 <- grep('A10BB09', patient_atc_codes, ignore.case = T)
       if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA02 is not found.
-        med_strength1 <- med_strength[index1]
+        med_strength1 <- as.numeric(unlist(med_strength[index1]))
+        med_strength1 <- med_strength1[!is.na(med_strength1)]
 
-        if (any(!is.na(med_strength1))) {
+        if (length(med_strength1) > 0) {
           cond1 <- any(med_strength1 == 30) | any(med_strength1 == 60)
         }
       }

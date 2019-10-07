@@ -55,11 +55,12 @@ START_G3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       } else {
 
         gender <- unlist(pdata[[i]][4])
+        gender <- gender[!is.na(gender)]
 
-        if (any(is.na(gender))) {
-          dm_sex_cond <- FALSE
+        if (length(gender) > 0) {
+          dm_sex_cond <- any(gender == 'female')   # checking condition dm_sex = female
         } else {
-          dm_sex_cond <- gender == 'female'   # checking condition dm_sex = female
+          dm_sex_cond <- FALSE
         }
 
         if (

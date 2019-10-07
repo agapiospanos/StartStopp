@@ -49,35 +49,43 @@ STOPP_G4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))) {
 
       cp_po <- as.numeric(unlist(pdata[[i]][2]))
+      cp_po <- cp_po[!is.na(cp_po)]
+
       cp_po_unit <- unlist(pdata[[i]][3])
 
-      if (!is.na(cp_po) & !is.na(cp_po_unit)){
+      cp_po_cond <- FALSE
+
+      if (length(cp_po) > 0 & length(cp_po_unit) > 0){
+
+        if (length(unique(cp_po_unit)) > 1) warning(paste('More than 1 cp_po_units found', unique(cp_po_unit), 'for patient', pid, '. The algorithm may not produce the expected results. Please remove one of the units for this patient.'))
+
         if (grepl('kPA', cp_po_unit, ignore.case = T)) { # using grepl so that we can evaluate the unit in a case insensitive way
-          cp_po_cond <- cp_po < 8
+          cp_po_cond <- any(cp_po < 8)
         } else if (grepl('mmHg', cp_po_unit, ignore.case = T)) {
-          cp_po_cond <- cp_po < 60
+          cp_po_cond <- any(cp_po < 60)
         } else {
-          cat('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion', '\n')
-          cp_po_cond <- FALSE
+          warning(paste('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion'))
         }
-      } else { # if we have missing in cp_po
-        cp_po_cond <- FALSE
       }
 
+      cp_po_cond <- FALSE
+
       cp_pco <- as.numeric(unlist(pdata[[i]][4]))
+      cp_pco <- cp_pco[!is.na(cp_pco)]
+
       cp_pco_unit <- unlist(pdata[[i]][5])
 
-      if (!is.na(cp_pco) & !is.na(cp_pco_unit)){
+      if (length(cp_pco) > 0 & length(cp_pco_unit) > 0){
+
+        if (length(unique(cp_pco_unit)) > 1) warning(paste('More than 1 cp_pco_units found:', unique(cp_po_unit), 'for patient', pid, '. The algorithm may not produce the expected results. Please remove one of the units for this patient.'))
+
         if (grepl('kPA', cp_pco_unit, ignore.case = T)) { # using grepl so that we can evaluate the unit in a case insensitive way
-          cp_pco_cond <- cp_pco > 6.5
+          cp_pco_cond <- any(cp_pco > 6.5)
         } else if (grepl('mmHg', cp_pco_unit, ignore.case = T)) {
-          cp_pco_cond <- cp_pco > 48.75
+          cp_pco_cond <- any(cp_pco > 48.75)
         } else {
-          cat('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion', '\n')
-          cp_pco_cond <- FALSE
+          warning(paste('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion'))
         }
-      } else { # if we have missing in cp_po
-        cp_pco_cond <- FALSE
       }
 
       # checking if fulfills at least one set of primary condition AND secondary condition

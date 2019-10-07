@@ -47,28 +47,31 @@ START_A4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     # checking if the patient id is in the list of missing data
     pid <- names(sapply(pdata[i], names))
 
-    missing_syst <- is.na(as.numeric(unlist(pdata[[i]][4])))
-    missing_diast <- is.na(as.numeric(unlist(pdata[[i]][5])))
+    syst_data <- as.numeric(unlist(pdata[[i]][4]))
+    syst_data <- syst_data[!is.na(syst_data)]
+
+    diast_data <- as.numeric(unlist(pdata[[i]][5]))
+    diast_data <- diast_data[!is.na(diast_data)]
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
 
       # checking if both the cp_syst AND cp_diast are NAs OR if there are without conditions. If this is the case, we mark the patient with 0.
-      if((missing_syst & missing_diast) | any(grepl('^C07|^C08|^C09|^C03A|^C03EA|^C02', unlist(pdata[[i]][1]), ignore.case=T))){
+      if((length(syst_data) > 0 & length(diast_data) > 0) | any(grepl('^C07|^C08|^C09|^C03A|^C03EA|^C02', unlist(pdata[[i]][1]), ignore.case=T))){
 
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
 
       } else {
 
-        diast_over_limit <- syst_over_low_limit <- syst_over_high_limit <- FALSE # setting the boolean vars to false by default so that if one of the cp_diast or cp_syst is NA it does not affect the result.
+        diast_over_limit <- syst_over_low_limit <- syst_over_high_limit <- FALSE
 
-        if (missing_syst) { # if cp_syst is NA then we check only the
-            diast_over_limit <- (as.numeric(unlist(pdata[[i]][5]))) > 90 # checking if cp_diast > 90
+        if (length(diast_data) > 0) { # if cp_syst is NA then we check only the
+            diast_over_limit <- any(diast_data > 90) # checking if cp_diast > 90
         }
 
-        if (missing_diast) {
-            syst_over_low_limit <- (as.numeric(unlist(pdata[[i]][4]))) > 140  # checking if cp_syst > 140
-            syst_over_high_limit <- (as.numeric(unlist(pdata[[i]][4]))) > 160 # checking if cp_syst > 160
+        if (length(syst_data) > 0) {
+            syst_over_low_limit <- any(syst_data > 140)  # checking if cp_syst > 140
+            syst_over_high_limit <- any(syst_data > 160) # checking if cp_syst > 160
         }
 
         if (

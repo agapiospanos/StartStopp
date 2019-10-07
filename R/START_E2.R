@@ -67,14 +67,19 @@ START_E2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         # get vectors of atc codes and med_long_term for the current patient
         patient_atc_codes <- unlist(pdata[[i]][1])
         med_long_term <- unlist(pdata[[i]][2])
+        all_na <- which(is.na(med_long_term))
+
+        patient_atc_codes <- patient_atc_codes[-all_na]
+        med_long_term <- med_long_term[-all_na]
 
         cond1 <- FALSE
 
         index1 <- grep('^H02AB', patient_atc_codes, ignore.case = T)
         if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the H02AB* is not found.
-          med_long_term_single <- as.numeric(med_long_term[index1])
-          if (!any(is.na(med_long_term_single))) {
-            cond1 <- any(grepl('1', med_long_term_single)) # checking if the patient receives the H02AB* for a long term period
+          med_long_term_single <- as.numeric(unlist(med_long_term[index1]))
+          med_long_term_single <- med_long_term_single[!is.na(med_long_term_single)] # removing all NAs
+          if (length(med_long_term_single) > 0) {
+            cond1 <- any(med_long_term_single == 1) # checking if the patient receives the H02AB* for a long term period
           }
         }
 

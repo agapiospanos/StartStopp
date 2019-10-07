@@ -61,24 +61,27 @@ STOPP_H3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
         index1 <- grep('^M01A', patient_atc_codes, ignore.case = T)
         if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the M01A* is not found.
-          med_long_term1 <- as.numeric(long_term[index1])
-          if (any(!is.na(med_long_term1))) {
+          med_long_term1 <- as.numeric(unlist(long_term[index1]))
+          med_long_term1 <- med_long_term1[!is.na(med_long_term1)]
+          if (length(med_long_term1) > 0) {
             cond1 <- any(med_long_term1 == 1)
           }
         }
 
         index2 <- grep('^N02BA', patient_atc_codes, ignore.case = T)
         if (length(index2) > 0) { # we get length of index because the grep returns an empty integer vector if the N02BA* is not found.
-          med_long_term2 <- as.numeric(long_term[index2])
-          if (any(!is.na(med_long_term2))) {
+          med_long_term2 <- as.numeric(unlist(long_term[index2]))
+          med_long_term2 <- med_long_term2[!is.na(med_long_term2)]
+          if (length(med_long_term2) > 0 ) {
             cond2 <- any(med_long_term2 == 1)
           }
         }
 
         index3 <- grep('^M01BA', patient_atc_codes, ignore.case = T)
         if (length(index3) > 0) { # we get length of index because the grep returns an empty integer vector if the M01BA* is not found.
-          med_long_term3 <- as.numeric(long_term[index3])
-          if (any(!is.na(med_long_term3))) {
+          med_long_term3 <- as.numeric(unlist(long_term[index3]))
+          med_long_term3 <- med_long_term3[!is.na(med_long_term3)]
+          if (length(med_long_term3) > 0) {
             cond3 <- any(med_long_term3 == 1)
           }
         }

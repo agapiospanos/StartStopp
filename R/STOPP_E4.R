@@ -49,7 +49,9 @@ STOPP_E4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
       cp_egrf_cond <- FALSE
       cp_egrf <- as.numeric(unlist(pdata[[i]][2]))
-      if (any(!is.na(cp_egrf))) {
+      cp_egrf <- cp_egrf[!is.na(cp_egrf)]
+
+      if (length(cp_egrf) > 0) {
         cp_egrf_cond <- any(cp_egrf < 50)
       }
 

@@ -45,28 +45,28 @@ STOPP_F4 <- function(path, excel_out = TRUE, export_data_path = NULL, suppressNA
 
       index1 <- grep('B03AA02', patient_atc_codes, ignore.case = T)
       if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA02 is not found.
-        med_strength1 <- as.numeric(med_strength[index1])
-        if (any(!is.na(med_strength1))) {
+        med_strength1 <- as.numeric(unlist(med_strength[index1]))
+        med_strength1 <- med_strength1[!is.na(med_strength1)]
+        if (length(med_strength1) > 0) {
           cond1 <- any(med_strength1 > 600) # checking if med_strength for this atc code is greater than 600
-          if (is.na(cond1)) cond1 <- FALSE # to catch the case that one of the med_strength values is NA and all are lower than 600 (eg. c(100, NA))
         }
       }
 
       index2 <- grep('B03AA07', patient_atc_codes, ignore.case = T)
       if (length(index2) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA07 is not found.
-        med_strength2 <- as.numeric(med_strength[index2])
-        if (any(!is.na(med_strength2))) {
+        med_strength2 <- as.numeric(unlist(med_strength[index2]))
+        med_strength2 <- med_strength2[!is.na(med_strength2)]
+        if (length(med_strength2) > 0) {
           cond2 <- any(med_strength2 > 600) # checking if med_strength for this atc code is greater than 600
-          if (is.na(cond2)) cond2 <- FALSE # to catch the case that one of the med_strength values is NA and all other values are lower than 600 (eg. c(100, NA))
         }
       }
 
       index3 <- grep('B03AA03', patient_atc_codes, ignore.case = T)
       if (length(index3) > 0) { # we get length of index because the grep returns an empty integer vector if the B03AA03 is not found.
-        med_strength3 <- as.numeric(med_strength[index3])
-        if (any(!is.na(med_strength3))) {
+        med_strength3 <- as.numeric(unlist(med_strength[index3]))
+        med_strength3 <- med_strength3[!is.na(med_strength3)]
+        if (length(med_strength3) > 0) {
           cond3 <- any(med_strength3 > 1800) # checking if med_strength for this atc code is greater than 1800
-          if (is.na(cond3)) cond3 <- FALSE # to catch the case that one of the med_strength and all other values are lower than 1800 (eg. c(100, NA))
         }
       }
 

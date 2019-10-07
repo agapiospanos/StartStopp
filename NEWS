@@ -1,6 +1,7 @@
-***StartStopp, version 1.1.0 ***
+***StartStopp, version 1.1.2 ***
 
-- minor fixes for STARTSTOPPbycategory
+- implemented fixes for better NA handling to avoid NAs in logical comparisons.
+- added warning messages to inform the user about possible unexpected results due to the data that are read from the excel file.
 
 ***StartStopp, version 1.1.0 ***
 

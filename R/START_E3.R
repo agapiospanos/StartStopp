@@ -59,10 +59,11 @@ START_E3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       } else {
 
         cp_bmd <- as.numeric(unlist(pdata[[i]][4]))
+        cp_bmd <- cp_bmd[!is.na(cp_bmd)]
         cp_bmd_cond <- FALSE
 
-        if (!any(is.na(cp_bmd))) {
-          cp_bmd > -2.5 # checking if cp_bmd is greater than -2.5 for this patient
+        if (length(cp_bmd) > 0) {
+          cp_bmd_cond <- any(cp_bmd > -2.5) # checking if cp_bmd is greater than -2.5 for this patient
         }
 
         if ( any(grepl('^M80|^M81|^S12|^S22|^S32|^S42|^S52|^S62|^S72|^S82|^S92|^T02|T08|T10|T12|T14.2', unlist(pdata[[i]][2]), ignore.case=T)) | # checking primary condition M80* OR M81* OR S12* OR S22* OR S32* OR S42* OR S52* OR S62* OR S72* OR S82* OR S92* OR T02* OR T08 OR T10 OR T12 OR T14.2 in the ih_icd10__decod list

@@ -56,15 +56,18 @@ STOPP_E1 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
       index1 <- grep('C01AA05', patient_atc_codes, ignore.case = T)
       if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the C01AA05 is not found.
-        daily_dosage_single <- as.numeric(daily_dosage[index1])
-        if (any(!is.na(daily_dosage_single))) {
+        daily_dosage_single <- as.numeric(unlist(daily_dosage[index1]))
+        daily_dosage_single <- daily_dosage_single[!is.na(daily_dosage_single)]
+        if (length(daily_dosage_single) > 0) {
           daily_dosage_cond <- any(daily_dosage_single > 0.125) # checking if daily_dosage for this atc code is greater that 0.125
         }
       }
 
       cp_egrf_cond <- FALSE
       cp_egrf <- as.numeric(unlist(pdata[[i]][3]))
-      if (any(!is.na(cp_egrf))) {
+      cp_egrf <- cp_egrf[!is.na(cp_egrf)]
+
+      if (length(cp_egrf) > 0) {
         cp_egrf_cond <- any(cp_egrf < 30)
       }
 

@@ -49,15 +49,26 @@ START_A5 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     pid <- names(sapply(pdata[i], names))
 
     fup2m_date_full <- unlist(pdata[[i]][4])
+    fup2m_date_full <- fup2m_date_full[!is.na(fup2m_date_full)]
+
+    if (length(fup2m_date_full) > 1) {
+      warning(paste('fup2m_date for patient', pid, 'has >1 values. Please note that code expects only 1 value to work as expected'))
+    }
 
     fup2m_date <- as.numeric(substr(fup2m_date_full, nchar(fup2m_date_full) - 3, nchar(fup2m_date_full))) # getting only the year from fup2m_date (e.g. from 27/01/2017 to 2017 )
 
-    dob_year <- as.numeric(unlist(pdata[[i]][5])) # date of birth year
 
-    if (!is.na(fup2m_date) && !is.na(dob_year)) {
-      year_diff <- (fup2m_date - dob_year) > 85
-    } else {
-      year_diff <- FALSE
+    dob_year <- unlist(pdata[[i]][5]) # date of birth year
+    dob_year <- as.numeric(dob_year[!is.na(dob_year)])
+
+    if (length(dob_year) > 1) {
+      warning(paste('dob_year for patient', pid, 'has >1 values. Please note that code expects only 1 value to work as expected'))
+    }
+
+    year_diff <- FALSE
+
+    if (length(fup2m_date) > 0 & length(dob_year) > 0) {
+      year_diff <- any((fup2m_date - dob_year) > 85)
     }
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){

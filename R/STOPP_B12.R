@@ -10,6 +10,7 @@
 #' Agapios Panos <panosagapios@gmail.com>
 #'
 #' @importFrom writexl write_xlsx
+#' @importFrom lubridate as.period interval
 #' @export
 
 
@@ -48,15 +49,23 @@ STOPP_B12 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){ # checking if missing_data_patients contain pid
 
       cp_pot <- as.numeric(unlist(pdata[[i]][2]))
+      cp_pot <- cp_pot[!is.na(cp_pot)]
+
       cp_pot_date <- as.POSIXct(unlist(pdata[[i]][3]), format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1"))
+      cp_pot_date <- cp_pot_date[!is.na(cp_pot_date)]
+
       fup2m_date <- as.POSIXct(unlist(pdata[[i]][4]), format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1"))
+      fup2m_date <- fup2m_date[!is.na(fup2m_date)]
+
+      if (length(cp_pot_date) != length(fup2m_date))
+        warning(paste('Please note that you have', length(cp_pot_date), 'cp_pot_date values and', length(fup2m_date), 'fup2m_date values for patient', pid, '. This may produce unexpected results as the comparisons are not 1 to 1'))
 
       cp_pot_cond <- FALSE
 
-      if (any(!is.na(cp_pot_date)) & any(!is.na(fup2m_date))) {
+      if (length(cp_pot_date) > 0 & length(fup2m_date) > 0 & length(cp_pot) > 0) {
         months_interval <- as.numeric(as.period(interval(cp_pot_date, fup2m_date)), "months")
 
-        cp_pot_cond <- (any(months_interval > 6) | (any(cp_pot > 5) & months_interval < 6))
+        cp_pot_cond <- (any(months_interval > 6) | (any(cp_pot > 5) & any(months_interval < 6)))
       }
 
       # checking if fulfills at least one primary condition
