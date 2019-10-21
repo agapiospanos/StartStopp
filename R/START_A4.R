@@ -56,7 +56,7 @@ START_A4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
 
       # checking if both the cp_syst AND cp_diast are NAs OR if there are without conditions. If this is the case, we mark the patient with 0.
-      if((length(syst_data) > 0 & length(diast_data) > 0) | any(grepl('^C07|^C08|^C09|^C03A|^C03EA|^C02', unlist(pdata[[i]][1]), ignore.case=T))){
+      if((length(syst_data) == 0 & length(diast_data) == 0) | any(grepl('^C07|^C08|^C09|^C03A|^C03EA|^C02', unlist(pdata[[i]][1]), ignore.case=T))){
 
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))

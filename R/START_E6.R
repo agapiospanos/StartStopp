@@ -36,6 +36,7 @@ START_E6 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
   data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
   data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', include_missing = suppressNA, ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
   data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_egrf', include_missing = TRUE, ignore_na = suppressNA)
+  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_egrf_unit', include_missing = TRUE, ignore_na = suppressNA)
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
@@ -49,14 +50,24 @@ START_E6 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
       cp_egrf_cond <- FALSE
       cp_egrf <- as.numeric(unlist(pdata[[i]][4]))
-      cp_egrf <- cp_egrf[!is.na(cp_egrf)]
+      na_cp_egrf <- which(is.na(cp_egrf))
 
-      if (length(cp_egrf) > 0) {
+      cp_egrf_unit <- as.numeric(unlist(pdata[[i]][5]))
+      na_cp_egrf_unit <- which(is.na(cp_egrf_unit))
+
+      # we must find the common NA so that we ignore those rows
+      common_na <- unique(c(na_cp_egrf, na_cp_egrf_unit))
+
+      cp_egrf <- cp_egrf[-common_na]
+      cp_egrf_unit <- cp_egrf_unit[-common_na]
+
+      # TODO must also check the cp_egrf_unit == 2
+      if (length(cp_egrf) > 0 && length(cp_egrf_unit) > 0) {
           cp_egrf_cond <- any(cp_egrf < 30)
       }
 
       if ( cp_egrf_cond | # checking the egfr value. If it is missing (NA) or the unit is missing it will be ignored
-           any(grepl('^M01AA', unlist(pdata[[i]][1]), ignore.case = T)) |       # checking without condition M01AA* in the med_gen__decod list
+           any(grepl('^M04AA', unlist(pdata[[i]][1]), ignore.case = T)) |       # checking without condition M01AA* in the med_gen__decod list
            any(grepl('N18.4|N18.5', unlist(pdata[[i]][2]), ignore.case = T)) |  # checking primary condition N18.4 OR N18.5 in the ih_icd10_decod list
            any(grepl('N18.4|N18.5', unlist(pdata[[i]][3]), ignore.case = T))    # checking primary condition N18.4 OR N18.5 in the h_icd10_decod list
          )

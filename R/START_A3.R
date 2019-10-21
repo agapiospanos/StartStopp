@@ -46,7 +46,7 @@ START_A3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
       # checking for the conditions
-      if ( any(grepl('^B02AC', unlist(pdata[[i]][1]), ignore.case=T)) | # checking without condition B02AC* in the med_gen_decod list
+      if ( any(grepl('^B01AC', unlist(pdata[[i]][1]), ignore.case=T)) | # checking without condition B02AC* in the med_gen_decod list
            any(grepl('^I48', unlist(pdata[[i]][2]), ignore.case=T)) | # checking additional unless condition I48* in the ih_icd10__decod list
            any(grepl('^I48', unlist(pdata[[i]][3]), ignore.case=T))   # checking additional unless condition I48* in the h_icd10__decod list
 

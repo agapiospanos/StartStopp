@@ -48,8 +48,14 @@ STOPP_B12 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){ # checking if missing_data_patients contain pid
 
+      missing_cp_pot <- FALSE
+
       cp_pot <- as.numeric(unlist(pdata[[i]][2]))
       cp_pot <- cp_pot[!is.na(cp_pot)]
+
+      if (length(cp_pot) == 0) {
+        missing_cp_pot <- TRUE
+      }
 
       cp_pot_date <- as.POSIXct(unlist(pdata[[i]][3]), format = "%m/%d/%Y", origin = as.POSIXct("1970/1/1"))
       cp_pot_date <- cp_pot_date[!is.na(cp_pot_date)]
@@ -69,12 +75,14 @@ STOPP_B12 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
       }
 
       # checking if fulfills at least one primary condition
-      if ( any(grepl('^C09', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition C09*
-           ( any(grepl('E87.5', unlist(pdata[[i]][2]), ignore.case=T)) |
-             any(grepl('E87.5', unlist(pdata[[i]][3]), ignore.case=T)) |
-             cp_pot_cond
-           )
-          )
+      if ( (
+             any(grepl('^C09', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition C09*
+             ( any(grepl('E87.5', unlist(pdata[[i]][2]), ignore.case=T)) |
+               any(grepl('E87.5', unlist(pdata[[i]][3]), ignore.case=T)) |
+               cp_pot_cond
+             )
+           ) | missing_cp_pot
+         )
       {
         # inserting the record to the data.frame evaluated_patients with status 1
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))

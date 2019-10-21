@@ -32,66 +32,28 @@ STOPP_G4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
   evaluated_patients <- data.frame(patients = character(0), status = numeric(0), missing_variables = character(0))
 
   # Importing the data
+  # Importing the data
   data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod', include_missing = suppressNA, ignore_na = suppressNA )
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_po', include_missing = suppressNA, ignore_na = suppressNA )
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_po_unit', include_missing = suppressNA, ignore_na = suppressNA )
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_pco', include_missing = suppressNA, ignore_na = suppressNA )
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_pco_unit', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', include_missing = suppressNA, ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]
 
   # iterration over all patients
-  for (i in 1:length(pdata)) {
+  for ( i in 1: length(pdata)){
     # checking if the patient id is in the list of missing data
     pid <- names(sapply(pdata[i], names))
 
-    if (is.na(match( pid, names(sapply(missing_data_patients, names))))) {
 
-      cp_po <- as.numeric(unlist(pdata[[i]][2]))
-      cp_po <- cp_po[!is.na(cp_po)]
-
-      cp_po_unit <- unlist(pdata[[i]][3])
-
-      cp_po_cond <- FALSE
-
-      if (length(cp_po) > 0 & length(cp_po_unit) > 0){
-
-        if (length(unique(cp_po_unit)) > 1) warning(paste('More than 1 cp_po_units found', unique(cp_po_unit), 'for patient', pid, '. The algorithm may not produce the expected results. Please remove one of the units for this patient.'))
-
-        if (grepl('kPA', cp_po_unit, ignore.case = T)) { # using grepl so that we can evaluate the unit in a case insensitive way
-          cp_po_cond <- any(cp_po < 8)
-        } else if (grepl('mmHg', cp_po_unit, ignore.case = T)) {
-          cp_po_cond <- any(cp_po < 60)
-        } else {
-          warning(paste('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion'))
-        }
-      }
-
-      cp_po_cond <- FALSE
-
-      cp_pco <- as.numeric(unlist(pdata[[i]][4]))
-      cp_pco <- cp_pco[!is.na(cp_pco)]
-
-      cp_pco_unit <- unlist(pdata[[i]][5])
-
-      if (length(cp_pco) > 0 & length(cp_pco_unit) > 0){
-
-        if (length(unique(cp_pco_unit)) > 1) warning(paste('More than 1 cp_pco_units found:', unique(cp_po_unit), 'for patient', pid, '. The algorithm may not produce the expected results. Please remove one of the units for this patient.'))
-
-        if (grepl('kPA', cp_pco_unit, ignore.case = T)) { # using grepl so that we can evaluate the unit in a case insensitive way
-          cp_pco_cond <- any(cp_pco > 6.5)
-        } else if (grepl('mmHg', cp_pco_unit, ignore.case = T)) {
-          cp_pco_cond <- any(cp_pco > 48.75)
-        } else {
-          warning(paste('the cp_po_unit for patient ', pid, ' is not valid. It must be either kPA or mmHg. Please correct this and rerun the criterion'))
-        }
-      }
-
+    if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
       # checking if fulfills at least one set of primary condition AND secondary condition
-      if ( any(grepl('^N05BA|^N05CD|^N05CF|^N03AE', unlist(pdata[[i]][1]), ignore.case=T)) & # checking for primary conditions N05BA* OR N05CD* OR N05CF* OR N03AE* in the med_gen_decod list
-           ( cp_po_cond | cp_pco_cond )
-         )
+      if ( any(grepl('^R03', unlist(pdata[[i]][1]), ignore.case=T)) & # checking in the med_gen_decod list
+           any(grepl('^C07AA|^C07BA|^C07CA|^C07DA|^C07FA|^S01ED', unlist(pdata[[i]][1]), ignore.case=T)) & # checking in the med_gen_decod list
+           ( any(grepl('^J45|J46', unlist(pdata[[i]][2]), ignore.case=T)) | # checking the secondary conditions H40.2 OR N40 OR R33 in the ih_icd10__decod list.
+             any(grepl('^J45|J46', unlist(pdata[[i]][3]), ignore.case=T))   # checking the secondary conditions H40.2 OR N40 OR R33 in the h_icd10__decod list.
+           )
+      )
       {
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))

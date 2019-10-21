@@ -32,7 +32,8 @@ START_A8 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
   evaluated_patients <- data.frame(patients = character(0), status = numeric(0), missing_variables = character(0))
 
   # Importing the data
-  data <- import_excel_data(path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod', include_missing = suppressNA, ignore_na = suppressNA )
+  data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
   data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', include_missing = suppressNA, ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
 
   pdata <- data[[1]]
@@ -44,14 +45,22 @@ START_A8 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     pid <- names(sapply(pdata[i], names))
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
-      #checking if fulfills at least one primary condition
-      if ( any(grepl('I11.0|I13.0|I13.2|^I50', unlist(pdata[[i]][1]), ignore.case=T)) |   # checking primary condition I11.0 OR I13.0 OR I13.2 OR I50* in the ih_icd10_decod list
-           any(grepl('I11.0|I13.0|I13.2|^I50', unlist(pdata[[i]][2]), ignore.case=T)) ) { # checking primary condition I11.0 OR I13.0 OR I13.2 OR I50* in the h_icd10_decod list
-        # inserting the record to the data.frame evaluated_patients
-        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
-      } else {
+
+      # checking for the conditions
+      if ( any(grepl('^C07', unlist(pdata[[i]][1]), ignore.case=T)) # checking without condition C07* in the med_gen_decod list
+      ){
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+      } else {
+        #checking if fulfills at least one primary condition
+        if ( any(grepl('I11.0|I13.0|I13.2|^I50', unlist(pdata[[i]][2]), ignore.case=T)) |   # checking primary condition I11.0 OR I13.0 OR I13.2 OR I50* in the ih_icd10_decod list
+             any(grepl('I11.0|I13.0|I13.2|^I50', unlist(pdata[[i]][3]), ignore.case=T)) ) { # checking primary condition I11.0 OR I13.0 OR I13.2 OR I50* in the h_icd10_decod list
+          # inserting the record to the data.frame evaluated_patients
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
+        } else {
+          # inserting the record to the data.frame evaluated_patients
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+        }
       }
     } else { # patient has missing data
       # inserting the record to the data.frame evaluated_patients

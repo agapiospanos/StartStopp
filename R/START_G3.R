@@ -48,7 +48,7 @@ START_G3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
 
       # checking for without conditions
-      if ( any(grepl('G03CA03|G03CA04|G03CA57', unlist(pdata[[i]][3]), ignore.case=T)) ) # checking without conditions in the med_gen__decod list
+      if ( any(grepl('G03CA03|G03CA04|G03CA57', unlist(pdata[[i]][1]), ignore.case=T)) ) # checking without conditions in the med_gen__decod list
       {
         # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))

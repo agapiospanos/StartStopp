@@ -47,6 +47,8 @@ STOPP_D4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){ # checking if missing_data_patients contain pid
 
+      cp_sod_cond <- FALSE
+
       cp_sod <- as.numeric(unlist(pdata[[i]][4]))
       cp_sod <- cp_sod[!is.na(cp_sod)]
 

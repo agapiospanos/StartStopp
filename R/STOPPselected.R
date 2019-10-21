@@ -553,6 +553,16 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(g4)$status)
   }
 
+  if (any(any(selected == "G5") | selected == "all") & !any(exclude == "G5")) {
+    G5 <- STOPP_G5(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
+    if (!has_build_data_frame) {
+      final_data <- data.frame(G5[[1]]$patients)
+      has_build_data_frame <- TRUE
+    }
+    final_data_colnames <- cbind(final_data_colnames, 'STOPP G5')
+    final_data <- cbind(final_data, as.data.frame(G5)$status)
+  }
+
   if (any(any(selected == "H1") | selected == "all") & !any(exclude == "H1")) {
     h1 <- STOPP_H1(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
     if (!has_build_data_frame) {

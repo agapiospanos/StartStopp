@@ -303,25 +303,16 @@ STARTselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(f1)$status)
   }
 
-  if (any(any(selected == "G1") | selected == "all") & !any(exclude == "G1")) {
-    g1 <- START_G1(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
+  if (any(any(selected == "G1_2") | selected == "all") & !any(exclude == "G1_2")) {
+    g1_2 <- START_G1_2(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
     if (!has_build_data_frame) {
-      final_data <- data.frame(g1[[1]]$patients)
+      final_data <- data.frame(g1_2[[1]]$patients)
       has_build_data_frame <- TRUE
     }
-    final_data_colnames <- cbind(final_data_colnames, 'START G1')
-    final_data <- cbind(final_data, as.data.frame(g1)$status)
+    final_data_colnames <- cbind(final_data_colnames, 'START G1_2')
+    final_data <- cbind(final_data, as.data.frame(g1_2)$status)
   }
 
-  if (any(any(selected == "G2") | selected == "all") & !any(exclude == "G2")) {
-    g2 <- START_G2(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(g2[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'START G2')
-    final_data <- cbind(final_data, as.data.frame(g2)$status)
-  }
 
   if (any(any(selected == "G3") | selected == "all") & !any(exclude == "G3")) {
     g3 <- START_G3(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)

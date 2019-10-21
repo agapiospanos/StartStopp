@@ -50,7 +50,7 @@ START_H2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
         #checking if fulfills at least one primary condition
-        if ( any(grepl('^N02A|N07BC05|N07BC06|N07BC02|N07BC01|R05DA04', unlist(pdata[[i]][2]), ignore.case=T)) )  # checking primary conditions N02A* OR N07BC05 OR N07BC06 OR N07BC02 OR N07BC01 OR R05DA04 in the med_gen__decod list
+        if ( any(grepl('^N02A|N07BC05|N07BC06|N07BC02|N07BC01|R05DA04', unlist(pdata[[i]][1]), ignore.case=T)) )  # checking primary conditions N02A* OR N07BC05 OR N07BC06 OR N07BC02 OR N07BC01 OR R05DA04 in the med_gen__decod list
         {
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))

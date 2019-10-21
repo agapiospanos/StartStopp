@@ -44,6 +44,7 @@ STOPP_B9 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     # checking if the patient id is in the list of missing data
     pid <- names(sapply(pdata[i], names))
 
+
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
       # checking for the conditions
       if ( any(grepl('^I50|I11.0|I13.0|I13.2', unlist(pdata[[i]][2]), ignore.case=T)) | # checking unless condition I50* OR I11.0 OR I13.0 OR I13.2 in the ih_icd_10_decod list
@@ -58,6 +59,9 @@ STOPP_B9 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
               ) & ( # AND between the primary and secondary conditions
                 any(grepl('I10|^I55', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition I10 OR I55* in the ih_icd_10_decod list
                 any(grepl('I10|^I55', unlist(pdata[[i]][3]), ignore.case=T))   # checking secondary condition I10 OR I55* in the h_icd_10_decod list
+              ) & ( # AND between the primary and secondary conditions
+                any(grepl('N39.3|N39.4|R32', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition in the ih_icd_10_decod list
+                any(grepl('N39.3|N39.4|R32', unlist(pdata[[i]][3]), ignore.case=T))   # checking secondary condition in the h_icd_10_decod list
               )
         ) {
           # inserting the record to the data.frame evaluated_patients

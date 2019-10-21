@@ -65,7 +65,7 @@ STOPP_L2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
           med_interv1 <- med_interv[index1]
 
           if (any(!is.na(med_interv1))) {
-            cond1 <- any(grepl('day', med_interv1, ignore.case = T))
+            cond1 <- any(grepl('^day$|^week$|^year$', med_interv1, ignore.case = T))
           }
         }
 
@@ -74,7 +74,7 @@ STOPP_L2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
           med_interv2 <- med_interv[index2]
 
           if (any(!is.na(med_interv2))) {
-            cond2 <- any(grepl('day', med_interv2, ignore.case = T))
+            cond2 <- any(grepl('^day$|^week$|^year$', med_interv2, ignore.case = T))
           }
         }
 
@@ -83,7 +83,7 @@ STOPP_L2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
           med_interv3 <- med_interv[index3]
 
           if (any(!is.na(med_interv3))) {
-            cond3 <- any(grepl('day', med_interv3, ignore.case = T))
+            cond3 <- any(grepl('^day$|^week$|^year$', med_interv3, ignore.case = T))
           }
         }
 
@@ -92,7 +92,7 @@ STOPP_L2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
           med_interv4 <- med_interv[index4]
 
           if (any(!is.na(med_interv4))) {
-            cond4 <- any(grepl('day', med_interv4, ignore.case = T))
+            cond4 <- any(grepl('^day$|^week$|^year$', med_interv4, ignore.case = T))
           }
         }
 
@@ -101,7 +101,7 @@ STOPP_L2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
           med_interv5 <- med_interv[index5]
 
           if (any(!is.na(med_interv5))) {
-            cond5 <- any(grepl('day', med_interv5, ignore.case = T))
+            cond5 <- any(grepl('^day$|^week$|^year$', med_interv5, ignore.case = T))
           }
         }
 

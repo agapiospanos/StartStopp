@@ -52,6 +52,9 @@ STOPP_B11 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
 
       if (length(cp_pot) > 0){
         cp_pot_cond <- any(cp_pot > 5)
+      } else {
+        # if cp pot cond is missing we must evalutate only the other conditions so we set it to TRUE
+        cp_pot_cond <- TRUE
       }
 
       # checking if fulfills at least one primary condition

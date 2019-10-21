@@ -1,3 +1,9 @@
+***StartStopp, version 1.2.0 ***
+
+- several bug fixes for criteria
+- added STOPP G5 (previously named G4) and modified STOPP G4
+- removed START G1 and START G2 and added a combination of these under the name START G1_2
+
 ***StartStopp, version 1.1.2 ***
 
 - implemented fixes for better NA handling to avoid NAs in logical comparisons.

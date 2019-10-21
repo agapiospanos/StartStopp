@@ -68,7 +68,7 @@ START_A5 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     year_diff <- FALSE
 
     if (length(fup2m_date) > 0 & length(dob_year) > 0) {
-      year_diff <- any((fup2m_date - dob_year) > 85)
+      year_diff <- any((fup2m_date - dob_year) < 85)
     }
 
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){

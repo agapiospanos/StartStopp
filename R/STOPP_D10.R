@@ -47,8 +47,8 @@ STOPP_D10 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
       # checking for the unless condition
       if ( any(grepl('^N05AN', unlist(pdata[[i]][1]), ignore.case=T)) | # checking unless condition N05AN* in the med_gen__decod list
-           ( any(grepl('F51.0|G47.0', unlist(pdata[[i]][2]), ignore.case=T)) | # checking unless condition F51.0 OR G47.0 in the ih_icd10__decod list
-             any(grepl('F51.0|G47.0', unlist(pdata[[i]][3]), ignore.case=T))   # checking unless condition F51.0 OR G47.0 in the h_icd10__decod list
+           ( any(grepl('^F00|^F01|^F02|F03|^F07|^G30|G31.0|G31.1|G31.8|^F20|^F25|F29', unlist(pdata[[i]][2]), ignore.case=T)) | # checking unless condition F51.0 OR G47.0 in the ih_icd10__decod list
+             any(grepl('^F00|^F01|^F02|F03|^F07|^G30|G31.0|G31.1|G31.8|^F20|^F25|F29', unlist(pdata[[i]][3]), ignore.case=T))   # checking unless condition F51.0 OR G47.0 in the h_icd10__decod list
            )
          )
       {
@@ -56,8 +56,12 @@ STOPP_D10 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, su
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
         #checking if fulfills at least one primary condition AND at least one secondary condition
-        if ( any(grepl('^N05A|^N06CA', unlist(pdata[[i]][1]), ignore.case=T)) # checking primary condition N05A* OR N06CA* in the med_gen_decod list
-        ) {
+        if ( any(grepl('^N05A|^N06CA', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition N05A* OR N06CA* in the med_gen_decod list
+             ( any(grepl('F51.0|G47.0', unlist(pdata[[i]][2]), ignore.case=T)) | # checking unless condition F51.0 OR G47.0 in the ih_icd10__decod list
+               any(grepl('F51.0|G47.0', unlist(pdata[[i]][3]), ignore.case=T))   # checking unless condition F51.0 OR G47.0 in the h_icd10__decod list
+             )
+           )
+        {
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
         } else {

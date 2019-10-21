@@ -1,4 +1,4 @@
-#' Evaluates the imported patients' data for the START G2 criterion.
+#' Evaluates the imported patients' data for the START G1-2 criterion.
 #'
 #' @param path (Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.
 #' @param excel_out (Boolean) (optional) (default: TRUE) output excel file with the evaluated data.
@@ -13,7 +13,7 @@
 #' @export
 
 
-START_G2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, suppressNA = TRUE) {
+START_G1_2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, suppressNA = TRUE) {
 
   # check the imported file for its extension and display file choose window in case the path variable is NA
   path<-chk_file(path)
@@ -49,9 +49,9 @@ START_G2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
       # checking for without conditions
       if (
-            any(grepl('60.2|60.3|60.4|60.5|60.6', unlist(pdata[[i]][2]), ignore.case=T)) | # checking without conditions in the ih_icd10__decod list
-            any(grepl('60.2|60.3|60.4|60.5|60.6', unlist(pdata[[i]][3]), ignore.case=T)) | # checking without conditions in the h_icd10__decod list
-            any(grepl('^G04CA|^G04CB', unlist(pdata[[i]][3]), ignore.case=T))              # checking without conditions in the med_gen__decod list
+        any(grepl('60.2|60.3|60.4|60.5|60.6', unlist(pdata[[i]][2]), ignore.case=T)) | # checking without conditions in the ih_icd10__decod list
+        any(grepl('60.2|60.3|60.4|60.5|60.6', unlist(pdata[[i]][3]), ignore.case=T)) | # checking without conditions in the h_icd10__decod list
+        any(grepl('^G04CA|^G04CB', unlist(pdata[[i]][1]), ignore.case=T))              # checking without conditions in the med_gen__decod list
       )
       {
         # inserting the record to the data.frame evaluated_patients
@@ -68,13 +68,13 @@ START_G2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         }
 
         if (
-              (
-                any(grepl('N40|R33', unlist(pdata[[i]][2]), ignore.case=T)) | # checking primary condition N40 OR R33 in the ih_icd10__decod list
-                any(grepl('N40|R33', unlist(pdata[[i]][3]), ignore.case=T))   # checking primary condition N40 OR R33 in the h_icd10__decod list
-              ) & (
-                dm_sex_cond
-              )
-           )
+          (
+            any(grepl('N40|R33', unlist(pdata[[i]][2]), ignore.case=T)) | # checking primary condition N40 OR R33 in the ih_icd10__decod list
+            any(grepl('N40|R33', unlist(pdata[[i]][3]), ignore.case=T))   # checking primary condition N40 OR R33 in the h_icd10__decod list
+          ) & (
+            dm_sex_cond
+          )
+        )
         {
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
@@ -96,14 +96,14 @@ START_G2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
 
   # printing results to the console
   if (suppressNA) {
-    cat('START G2: ', fulfill_count, 'patients out of', total_count + missing_count, 'patients meet the criterion.\n')
+    cat('START G1_2: ', fulfill_count, 'patients out of', total_count + missing_count, 'patients meet the criterion.\n')
   } else {
-    cat('START G2: ', fulfill_count, 'patients out of', total_count, 'patients meet the criterion.', missing_count, 'patients have missing data. \n')
+    cat('START G1_2: ', fulfill_count, 'patients out of', total_count, 'patients meet the criterion.', missing_count, 'patients have missing data. \n')
   }
 
   if (excel_out) {
     # export the evaluated list of patients to excel file
-    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/START-G2.xlsx'), col_names = TRUE)
+    write_xlsx(evaluated_patients, path = paste0( export_data_path, '/START-G1_2.xlsx'), col_names = TRUE)
   }
 
   invisible (list(evaluated_patients)) # instead of return as we do not want to be printed
