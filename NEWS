@@ -1,3 +1,13 @@
+***StartStopp, version 1.3.0 ***
+
+- START A1: replaced I48.2 with I48
+- START A3: added I70* and I67.2
+- START E3 and START E4: missing cp_bmd is ignored and the rest of conditions are evaluated
+- START E6: removed cp_egfr
+- STOPP B9: replaced I55* with I15*
+- STOPP C3: added D68.4
+- STOPP L2: added 'every other day' and 'every other week' in the evaluation of med_interv
+
 ***StartStopp, version 1.2.0 ***
 
 - several bug fixes for criteria

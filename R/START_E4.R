@@ -35,7 +35,7 @@ START_E4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
   data <- import_excel_data(path = path, worksheet = 1, var_col = 'med_gen__decod', include_missing = suppressNA, ignore_na = suppressNA )
   data <- import_excel_data(current_data = data, path = path, worksheet = 2, var_col = 'ih_icd10__decod', include_missing = suppressNA, ignore_na = suppressNA )
   data <- import_excel_data(current_data = data, path = path, worksheet = 3, var_col = 'h_icd10__decod', include_missing = suppressNA, ignore_na = TRUE ) # in the third sheet we ignore the n/a as they refer to a patient that visited the hospital but nothing was recorded.
-  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_bmd')
+  data <- import_excel_data(current_data = data, path = path, worksheet = 4, var_col = 'cp_bmd', include_missing = suppressNA, ignore_na = suppressNA)
 
   pdata <- data[[1]]
   missing_data_patients <- data[[2]]

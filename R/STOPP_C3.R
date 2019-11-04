@@ -47,8 +47,8 @@ STOPP_C3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
     if (is.na(match( pid, names(sapply(missing_data_patients, names))))){
       #checking if fulfills at least one primary condition AND at least one secondary condition
       if ( any(grepl('^B01AC|^B01AA|^B01AE|^B01AF', unlist(pdata[[i]][1]), ignore.case=T)) & # checking primary condition B01AC* OR B01AA* OR B01AE* OR B01AF* in the med_gen_decod list
-           ( any(grepl('D66|D67|D68.0|D69.3|K92.0|K92.1|K92.2|^I60|^I61|^I62|I64', unlist(pdata[[i]][2]), ignore.case=T)) | # checking for secondary conditions D66 OR D67 OR D68.0 OR D69.3 OR K92.0 OR K92.1 OR K92.2 OR I60* OR I61* OR I62* OR I64 in the ih_icd10__decod list.
-             any(grepl('D66|D67|D68.0|D69.3|K92.0|K92.1|K92.2|^I60|^I61|^I62|I64', unlist(pdata[[i]][3]), ignore.case=T))   # checking for secondary conditions D66 OR D67 OR D68.0 OR D69.3 OR K92.0 OR K92.1 OR K92.2 OR I60* OR I61* OR I62* OR I64 in the h_icd10__decod list.
+           ( any(grepl('D66|D67|D68.0|D69.3|K92.0|K92.1|K92.2|^I60|^I61|^I62|I64|D68.4', unlist(pdata[[i]][2]), ignore.case=T)) | # checking for secondary conditions D66 OR D67 OR D68.0 OR D69.3 OR K92.0 OR K92.1 OR K92.2 OR I60* OR I61* OR I62* OR I64 OR D68.4 in the ih_icd10__decod list.
+             any(grepl('D66|D67|D68.0|D69.3|K92.0|K92.1|K92.2|^I60|^I61|^I62|I64|D68.4', unlist(pdata[[i]][3]), ignore.case=T))   # checking for secondary conditions D66 OR D67 OR D68.0 OR D69.3 OR K92.0 OR K92.1 OR K92.2 OR I60* OR I61* OR I62* OR I64 OR D68.4 in the h_icd10__decod list.
            )
          )
       {

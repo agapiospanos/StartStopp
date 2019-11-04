@@ -55,9 +55,9 @@ START_A3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
         #checking if fulfills at least one primary condition
-        # I63* OR I64 OR I66* OR G45* OR I73.9 OR I74* OR I65* OR I20* OR I21* OR I22*OR I24* OR I25* OR Z95.1 OR Z95.5 OR Z95.8)
-        if ( any(grepl('^I63|I64|^I66|^G45|I73.9|^I74|^I65|^I20|^I21|^I22|^I24|^I25|Z95.1|Z95.5|Z95.8', unlist(pdata[[i]][2]), ignore.case=T)) |   # checking primary condition I63* OR I64 OR I66* OR G45* OR I73.9 OR I74* OR I65* OR I20* OR I21* OR I22*OR I24* OR I25* OR Z95.1 OR Z95.5 OR Z95.8 in the ih_icd10_decod list
-             any(grepl('^I63|I64|^I66|^G45|I73.9|^I74|^I65|^I20|^I21|^I22|^I24|^I25|Z95.1|Z95.5|Z95.8', unlist(pdata[[i]][3]), ignore.case=T)) ) { # checking primary condition I63* OR I64 OR I66* OR G45* OR I73.9 OR I74* OR I65* OR I20* OR I21* OR I22*OR I24* OR I25* OR Z95.1 OR Z95.5 OR Z95.8 in the h_icd10_decod list
+        # I63* OR I64 OR I66* OR G45* OR I73.9 OR I74* OR I65* OR I20* OR I21* OR I22*OR I24* OR I25* OR Z95.1 OR Z95.5 OR Z95.8 OR I70* OR I67.2)
+        if ( any(grepl('^I63|I64|^I66|^G45|I73.9|^I74|^I65|^I20|^I21|^I22|^I24|^I25|Z95.1|Z95.5|Z95.8|^I70|I67.2', unlist(pdata[[i]][2]), ignore.case=T)) |   # checking primary condition I63* OR I64 OR I66* OR G45* OR I73.9 OR I74* OR I65* OR I20* OR I21* OR I22*OR I24* OR I25* OR Z95.1 OR Z95.5 OR Z95.8 in the ih_icd10_decod list
+             any(grepl('^I63|I64|^I66|^G45|I73.9|^I74|^I65|^I20|^I21|^I22|^I24|^I25|Z95.1|Z95.5|Z95.8|^I70|I67.2', unlist(pdata[[i]][3]), ignore.case=T)) ) { # checking primary condition I63* OR I64 OR I66* OR G45* OR I73.9 OR I74* OR I65* OR I20* OR I21* OR I22*OR I24* OR I25* OR Z95.1 OR Z95.5 OR Z95.8 in the h_icd10_decod list
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
         } else {

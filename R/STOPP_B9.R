@@ -57,8 +57,8 @@ STOPP_B9 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         #checking if fulfills at least one primary condition AND at least one secondary condition
         if ( ( any(grepl('^C03C|^C03EB', unlist(pdata[[i]][1]), ignore.case=T)) # checking primary condition C03C* OR C03EB* in the med_gen_decod list
               ) & ( # AND between the primary and secondary conditions
-                any(grepl('I10|^I55', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition I10 OR I55* in the ih_icd_10_decod list
-                any(grepl('I10|^I55', unlist(pdata[[i]][3]), ignore.case=T))   # checking secondary condition I10 OR I55* in the h_icd_10_decod list
+                any(grepl('I10|^I15', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition I10 OR I15* in the ih_icd_10_decod list
+                any(grepl('I10|^I15', unlist(pdata[[i]][3]), ignore.case=T))   # checking secondary condition I10 OR I15* in the h_icd_10_decod list
               ) & ( # AND between the primary and secondary conditions
                 any(grepl('N39.3|N39.4|R32', unlist(pdata[[i]][2]), ignore.case=T)) | # checking secondary condition in the ih_icd_10_decod list
                 any(grepl('N39.3|N39.4|R32', unlist(pdata[[i]][3]), ignore.case=T))   # checking secondary condition in the h_icd_10_decod list
