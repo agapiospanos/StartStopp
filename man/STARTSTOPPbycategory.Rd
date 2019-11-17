@@ -4,14 +4,19 @@
 \alias{STARTSTOPPbycategory}
 \title{Evaluates the imported patients' data for all the START and STOPP criteria at once and returns the results by category (overuse, misuse, underuse) and not by each criterion (e.g. STOPP B1, STOPP B2, etc.).}
 \usage{
-STARTSTOPPbycategory(path = NULL, STARTexclude = NULL,
-  STOPPexclude = NULL, excel_out = TRUE, single_excel = TRUE,
-  export_data_path = NULL, suppressNA = TRUE)
+STARTSTOPPbycategory(path = NULL, STARTselected = "all",
+  STARTexclude = NULL, STOPPselected = "all", STOPPexclude = NULL,
+  excel_out = TRUE, single_excel = TRUE, export_data_path = NULL,
+  suppressNA = TRUE)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}
 
+\item{STARTselected}{(Character) (optional) (default: c('all')) a vector of START criteria that you want to include. Example: c("B3", "C1").}
+
 \item{STARTexclude}{(Character) (optional) (default: NULL) a vector of START criteria that you want to exclude. Example: c("B3", "C1").}
+
+\item{STOPPselected}{(Character) (optional) (default: c('all')) a vector of STOPP criteria that you want to include Example: c("C6", "D2").}
 
 \item{STOPPexclude}{(Character) (optional) (default: NULL) a vector of STOPP criteria that you want to exclude. Example: c("C6", "D2").}
 
