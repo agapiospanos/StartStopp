@@ -4,8 +4,12 @@
 \alias{STOPP_D13}
 \title{Evaluates the imported patients' data for the STOPP D13 criterion.}
 \usage{
-STOPP_D13(path = NULL, excel_out = TRUE, export_data_path = NULL,
-  suppressNA = TRUE)
+STOPP_D13(
+  path = NULL,
+  excel_out = TRUE,
+  export_data_path = NULL,
+  suppressNA = TRUE
+)
 }
 \arguments{
 \item{path}{(Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.}

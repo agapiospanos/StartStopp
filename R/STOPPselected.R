@@ -103,16 +103,6 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(b7)$status)
   }
 
-  if (any(any(selected == "B8") | selected == "all") & !any(exclude == "B8")) {
-    b8 <- STOPP_B8(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(b8[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP B8')
-    final_data <- cbind(final_data, as.data.frame(b8)$status)
-  }
-
   if (any(any(selected == "B9") | selected == "all") & !any(exclude == "B9")) {
     b9 <- STOPP_B9(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
     if (!has_build_data_frame) {
@@ -131,26 +121,6 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     }
     final_data_colnames <- cbind(final_data_colnames, 'STOPP B10')
     final_data <- cbind(final_data, as.data.frame(b10)$status)
-  }
-
-  if (any(any(selected == "B11") | selected == "all") & !any(exclude == "B11")) {
-    b11 <- STOPP_B11(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(b11[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP B11')
-    final_data <- cbind(final_data, as.data.frame(b11)$status)
-  }
-
-  if (any(any(selected == "B12") | selected == "all") & !any(exclude == "B12")) {
-    b12 <- STOPP_B12(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(b12[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP B12')
-    final_data <- cbind(final_data, as.data.frame(b12)$status)
   }
 
   if (any(any(selected == "B13") | selected == "all") & !any(exclude == "B13")) {
@@ -303,16 +273,6 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(d3)$status)
   }
 
-  if (any(any(selected == "D4") | selected == "all") & !any(exclude == "D4")) {
-    d4 <- STOPP_D4(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(d4[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP D4')
-    final_data <- cbind(final_data, as.data.frame(d4)$status)
-  }
-
   if (any(any(selected == "D5") | selected == "all") & !any(exclude == "D5")) {
     d5 <- STOPP_D5(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
     if (!has_build_data_frame) {
@@ -413,66 +373,6 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(d14)$status)
   }
 
-  if (any(any(selected == "E1") | selected == "all") & !any(exclude == "E1")) {
-    e1 <- STOPP_E1(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(e1[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP E1')
-    final_data <- cbind(final_data, as.data.frame(e1)$status)
-  }
-
-  if (any(any(selected == "E2") | selected == "all") & !any(exclude == "E2")) {
-    e2 <- STOPP_E2(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(e2[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP E2')
-    final_data <- cbind(final_data, as.data.frame(e2)$status)
-  }
-
-  if (any(any(selected == "E3") | selected == "all") & !any(exclude == "E3")) {
-    e3 <- STOPP_E3(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(e3[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP E3')
-    final_data <- cbind(final_data, as.data.frame(e3)$status)
-  }
-
-  if (any(any(selected == "E4") | selected == "all") & !any(exclude == "E4")) {
-    e4 <- STOPP_E4(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(e4[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP E4')
-    final_data <- cbind(final_data, as.data.frame(e4)$status)
-  }
-
-  if (any(any(selected == "E5") | selected == "all") & !any(exclude == "E5")) {
-    e5 <- STOPP_E5(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(e5[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP E5')
-    final_data <- cbind(final_data, as.data.frame(e5)$status)
-  }
-
-  if (any(any(selected == "E6") | selected == "all") & !any(exclude == "E6")) {
-    e6 <- STOPP_E6(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(e6[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP E6')
-    final_data <- cbind(final_data, as.data.frame(e6)$status)
-  }
-
   if (any(any(selected == "F1") | selected == "all") & !any(exclude == "F1")) {
     f1 <- STOPP_F1(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
     if (!has_build_data_frame) {
@@ -541,26 +441,6 @@ STOPPselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     }
     final_data_colnames <- cbind(final_data_colnames, 'STOPP G3')
     final_data <- cbind(final_data, as.data.frame(g3)$status)
-  }
-
-  if (any(any(selected == "G4") | selected == "all") & !any(exclude == "G4")) {
-    g4 <- STOPP_G4(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(g4[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP G4')
-    final_data <- cbind(final_data, as.data.frame(g4)$status)
-  }
-
-  if (any(any(selected == "G5") | selected == "all") & !any(exclude == "G5")) {
-    G5 <- STOPP_G5(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(G5[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'STOPP G5')
-    final_data <- cbind(final_data, as.data.frame(G5)$status)
   }
 
   if (any(any(selected == "H1") | selected == "all") & !any(exclude == "H1")) {

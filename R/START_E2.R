@@ -69,8 +69,10 @@ START_E2 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         med_long_term <- unlist(pdata[[i]][2])
         all_na <- which(is.na(med_long_term))
 
-        patient_atc_codes <- patient_atc_codes[-all_na]
-        med_long_term <- med_long_term[-all_na]
+        if (length(all_na) > 0) {
+          patient_atc_codes <- patient_atc_codes[-all_na]
+          med_long_term <- med_long_term[-all_na]
+        }
 
         cond1 <- FALSE
 

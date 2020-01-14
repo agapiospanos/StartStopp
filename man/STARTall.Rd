@@ -4,9 +4,15 @@
 \alias{STARTall}
 \title{Evaluates the imported patients' data for all the START criteria at once.}
 \usage{
-STARTall(path = NULL, exclude = NULL, excel_out = TRUE,
-  single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE,
-  returnData = FALSE)
+STARTall(
+  path = NULL,
+  exclude = NULL,
+  excel_out = TRUE,
+  single_excel = TRUE,
+  export_data_path = NULL,
+  suppressNA = TRUE,
+  returnData = FALSE
+)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}

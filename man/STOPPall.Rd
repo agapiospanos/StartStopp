@@ -4,9 +4,15 @@
 \alias{STOPPall}
 \title{Evaluates the imported patients' data for all the STOPP criteria at once.}
 \usage{
-STOPPall(path = NULL, exclude = NULL, excel_out = TRUE,
-  single_excel = TRUE, export_data_path = NULL, suppressNA = TRUE,
-  returnData = FALSE)
+STOPPall(
+  path = NULL,
+  exclude = NULL,
+  excel_out = TRUE,
+  single_excel = TRUE,
+  export_data_path = NULL,
+  suppressNA = TRUE,
+  returnData = FALSE
+)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}

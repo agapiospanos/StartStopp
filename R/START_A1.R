@@ -52,8 +52,8 @@ START_A1 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       } else {
         #checking if fulfills at least one primary condition
-        if ( any(grepl('I48', unlist(pdata[[i]][2]), ignore.case=T)) | # checking primary condition I48 in the ih_icd10_decod list
-             any(grepl('I48', unlist(pdata[[i]][3]), ignore.case=T))   # checking primary condition I48 in the h_icd10_decod list
+        if ( any(grepl('^I48', unlist(pdata[[i]][2]), ignore.case=T)) | # checking primary condition I48* in the ih_icd10_decod list
+             any(grepl('^I48', unlist(pdata[[i]][3]), ignore.case=T))   # checking primary condition I48* in the h_icd10_decod list
            ) {
           # inserting the record to the data.frame evaluated_patients
           evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))

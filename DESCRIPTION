@@ -1,13 +1,13 @@
 Package: StartStopp
 Type: Package
 Title: START and STOPP criteria evaluation for potentially inappropriate prescribing
-Version: 1.4.0
+Version: 1.5.0
 Authors@R: person("Agapios", "Panos", role = c("aut", "cre"), email = "panosagapios@gmail.com")
-Date: 2019-11-17
+Date: 2020-01-13
 Depends: R (>= 3.0.0)
 Imports: readxl (>= 1.1.0), writexl(>= 1.0), lubridate(>= 1.7.4), easycsv(>= 1.0.8)
 Maintainer: Agapios Panos <panosagapios@gmail.com>
 Description: A package that evaluates patient data for START (Screening Tool to Alert doctors to Right Treatments) and STOPP (Screening Tool of Older People's Potentially Inappropriate Prescriptions) criteria and indicates the patients that are fulfill either a START or a STOPP criterion.
 Encoding: UTF-8
 License: GPL (>= 2)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

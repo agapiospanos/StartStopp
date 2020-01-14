@@ -54,6 +54,7 @@ STOPP_M1 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
         # inserting the record to the data.frame evaluated_patients with status 0
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
       }
+
     } else { # patient has missing data
 
       # inserting the record to the data.frame evaluated_patients with status 2

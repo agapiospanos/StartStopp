@@ -133,16 +133,6 @@ STARTselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(b2)$status)
   }
 
-  if (any(any(selected == "B3") | selected == "all") & !any(exclude == "B3")) {
-    b3 <- START_B3(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(b3[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'START B3')
-    final_data <- cbind(final_data, as.data.frame(b3)$status)
-  }
-
   if (any(any(selected == "C1") | selected == "all") & !any(exclude == "C1")) {
     c1 <- START_C1(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
     if (!has_build_data_frame) {

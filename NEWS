@@ -1,3 +1,9 @@
+***StartStopp, version 1.5.0 ***
+
+- removed several STOPP criteria (B8, B11, B12, D4, E1, E2, E3, E4, E5, E6, G4, G5)
+- removed START B3 criterion
+- updated START criteria (A1, A2, E2, E3) and STOPP criteria (B6, H4, M1)
+
 ***StartStopp, version 1.4.0 ***
 
 - updated STARTSTOPPbycategory to also have a STARTselected and STOPPselected argument

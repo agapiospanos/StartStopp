@@ -50,7 +50,7 @@ START_E3 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       # checking for without conditions
       if ( any(grepl('A12AX|M05BB04|M05BB05|M05BB08', unlist(pdata[[i]][1]), ignore.case=T)) |
            ( any(grepl('A12AA|M05BB01|M05BB02|A11GB01|A11AA02', unlist(pdata[[i]][1]), ignore.case=T))  &
-             any(grepl('A11CB|A1CC|M05BB03|M05BB06|M05BB07', unlist(pdata[[i]][1]), ignore.case=T))
+             any(grepl('A11CB|A11CC|M05BB03|M05BB06|M05BB07', unlist(pdata[[i]][1]), ignore.case=T))
            )
          )
       {

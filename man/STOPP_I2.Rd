@@ -4,8 +4,12 @@
 \alias{STOPP_I2}
 \title{Evaluates the imported patients' data for the STOPP I2 criterion.}
 \usage{
-STOPP_I2(path = NULL, excel_out = TRUE, export_data_path = NULL,
-  suppressNA = TRUE)
+STOPP_I2(
+  path = NULL,
+  excel_out = TRUE,
+  export_data_path = NULL,
+  suppressNA = TRUE
+)
 }
 \arguments{
 \item{path}{(Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.}

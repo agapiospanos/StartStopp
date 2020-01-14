@@ -50,39 +50,48 @@ STOPP_H4 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       patient_atc_codes <- unlist(pdata[[i]][1])
       long_term <- unlist(pdata[[i]][2])
 
-      cond1 <- cond2 <- FALSE
-
-      index1 <- grep('^H02AB', patient_atc_codes, ignore.case = T)
-      if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the H02AB* is not found.
-        med_long_term1 <- as.numeric(unlist(long_term[index1]))
-        med_long_term1 <- med_long_term1[!is.na(med_long_term1)]
-        if (length(med_long_term1) > 0) {
-          cond1 <- any(med_long_term1 == 1)
-        }
-      }
-
-      index2 <- grep('H02BX01', patient_atc_codes, ignore.case = T)
-      if (length(index2) > 0) { # we get length of index because the grep returns an empty integer vector if the H02BX01 is not found.
-        med_long_term2 <- as.numeric(unlist(long_term[index2]))
-        med_long_term2 <- med_long_term2[!is.na(med_long_term2)]
-        if (length(med_long_term2) > 0) {
-          cond2 <- any(med_long_term2 == 1)
-        }
-      }
-
-      #checking if fulfills at least one primary condition AND at least one secondary condition
-      if (
-        ( cond1 | cond2 ) & # AND between the primary and secondary conditions
-        ( any(grepl('^M05|^M06', unlist(pdata[[i]][3]), ignore.case=T)) | # checking secondary condition M05* OR M06* in the ih_icd_10_decod list
-          any(grepl('^M05|^M06', unlist(pdata[[i]][4]), ignore.case=T))   # checking secondary condition M05* OR M06* in the h_icd_10_decod list
-        )
+      # checking unless condition
+      if(any(grepl('^L04A|L01BA01|A07EC01', patient_atc_codes, ignore.case=T)) # checking unless condition C03A* OR C03BA* OR C03D* OR C03EA* OR C07* OR C08* OR C09* OR C02A* OR C02CA* in the med_gen_decod list
       ) {
         # inserting the record to the data.frame evaluated_patients
-        evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
-      } else {
-        # inserting the record to the data.frame evaluated_patients
         evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+      } else {
+        cond1 <- cond2 <- FALSE
+
+        index1 <- grep('^H02AB', patient_atc_codes, ignore.case = T)
+        if (length(index1) > 0) { # we get length of index because the grep returns an empty integer vector if the H02AB* is not found.
+          med_long_term1 <- as.numeric(unlist(long_term[index1]))
+          med_long_term1 <- med_long_term1[!is.na(med_long_term1)]
+          if (length(med_long_term1) > 0) {
+            cond1 <- any(med_long_term1 == 1)
+          }
+        }
+
+        index2 <- grep('H02BX01', patient_atc_codes, ignore.case = T)
+        if (length(index2) > 0) { # we get length of index because the grep returns an empty integer vector if the H02BX01 is not found.
+          med_long_term2 <- as.numeric(unlist(long_term[index2]))
+          med_long_term2 <- med_long_term2[!is.na(med_long_term2)]
+          if (length(med_long_term2) > 0) {
+            cond2 <- any(med_long_term2 == 1)
+          }
+        }
+
+        #checking if fulfills at least one primary condition AND at least one secondary condition
+        if (
+          ( cond1 | cond2 ) & # AND between the primary and secondary conditions
+          ( any(grepl('^M05|^M06', unlist(pdata[[i]][3]), ignore.case=T)) | # checking secondary condition M05* OR M06* in the ih_icd_10_decod list
+            any(grepl('^M05|^M06', unlist(pdata[[i]][4]), ignore.case=T))   # checking secondary condition M05* OR M06* in the h_icd_10_decod list
+          )
+        ) {
+          # inserting the record to the data.frame evaluated_patients
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 1, missing_variables = ''))
+        } else {
+          # inserting the record to the data.frame evaluated_patients
+          evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 0, missing_variables = ''))
+        }
       }
+
+
     } else { # patient has missing data
      # inserting the record to the data.frame evaluated_patients
       evaluated_patients <- rbind(evaluated_patients, data.frame(patients = pid, status = 2, missing_variables = paste(missing_data_patients[[pid]], collapse = ', ')))
