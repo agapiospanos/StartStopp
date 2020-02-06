@@ -1,3 +1,8 @@
+***StartStopp, version 1.6.0 ***
+
+- removed START I2 criterion
+- corrected STOPP B6 criterion boolean expression
+
 ***StartStopp, version 1.5.0 ***
 
 - removed several STOPP criteria (B8, B11, B12, D4, E1, E2, E3, E4, E5, E6, G4, G5)

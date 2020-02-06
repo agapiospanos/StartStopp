@@ -49,7 +49,7 @@ STOPP_B6 <- function(path = NULL, excel_out = TRUE, export_data_path = NULL, sup
       if (
           ( any(grepl('^I50|I11.0|I13.0|I13.2', unlist(pdata[[i]][2]), ignore.case=T)) | # checking unless condition I50* OR I11.0 OR I13.0 OR I13.2 in the ih_icd_10_decod list
             any(grepl('^I50|I11.0|I13.0|I13.2', unlist(pdata[[i]][3]), ignore.case=T))   # checking unless condition I50* OR I11.0 OR I13.0 OR I13.2 in the h_icd_10_decod list
-          ) & (
+          ) | (
             any(grepl('^C03A|^C03BA|^C03D|^C03EA|^C07|^C08|^C09|^C02A|^C02CA', unlist(pdata[[i]][1]), ignore.case=T)) # checking unless condition C03A* OR C03BA* OR C03D* OR C03EA* OR C07* OR C08* OR C09* OR C02A* OR C02CA* in the med_gen_decod list
           )
       ){

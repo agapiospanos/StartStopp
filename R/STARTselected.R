@@ -334,16 +334,6 @@ STARTselected <- function(selected = NULL, exclude = NULL, path = NULL, excel_ou
     final_data <- cbind(final_data, as.data.frame(h2)$status)
   }
 
-  if (any(any(selected == "I2") | selected == "all") & !any(exclude == "I2")) {
-    i2 <- START_I2(path = path, excel_out = !single_excel, export_data_path = export_data_path, suppressNA = suppressNA)
-    if (!has_build_data_frame) {
-      final_data <- data.frame(i2[[1]]$patients)
-      has_build_data_frame <- TRUE
-    }
-    final_data_colnames <- cbind(final_data_colnames, 'START I2')
-    final_data <- cbind(final_data, as.data.frame(i2)$status)
-  }
-
   final_data <- setNames(final_data, final_data_colnames)
 
   if (single_excel) {

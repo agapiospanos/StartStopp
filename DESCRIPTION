@@ -1,9 +1,9 @@
 Package: StartStopp
 Type: Package
 Title: START and STOPP criteria evaluation for potentially inappropriate prescribing
-Version: 1.5.0
+Version: 1.6.0
 Authors@R: person("Agapios", "Panos", role = c("aut", "cre"), email = "panosagapios@gmail.com")
-Date: 2020-01-13
+Date: 2020-02-06
 Depends: R (>= 3.0.0)
 Imports: readxl (>= 1.1.0), writexl(>= 1.0), lubridate(>= 1.7.4), easycsv(>= 1.0.8)
 Maintainer: Agapios Panos <panosagapios@gmail.com>

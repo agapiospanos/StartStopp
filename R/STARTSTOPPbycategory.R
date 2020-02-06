@@ -33,10 +33,10 @@ STARTSTOPPbycategory <- function (path = NULL, STARTselected = "all", STARTexclu
 
   underuse <- c( 'START A1', 'START A2', 'START A3', 'START A4', 'START A5', 'START A6', 'START A7', 'START A8', 'START B1', 'START B2', 'START C1', 'START C2', 'START C3', 'START C4',
                  'START C5', 'START C6', 'START D1', 'START D2', 'START E1', 'START E2', 'START E3', 'START E4', 'START E5', 'START E6', 'START E7', 'START F1', 'START G1_2', 'START G3',
-                 'START H1', 'START H2', 'START I2' )
+                 'START H1', 'START H2' )
 
   allSTOPPcriteria <- c("B1", "B10", "B11", "B12", "B13", "B2", "B3", "B4", "B5", "B6", "B7", "B9", "C1", "C10", "C11", "C2", "C3", "C4", "C5", "C6", "C7", "C8", "C9", "D1", "D10", "D11", "D12", "D13", "D14", "D2", "D3", "D5", "D6", "D7", "D8", "D9", "F1", "F2", "F3", "F4", "G1", "G2", "G3", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "H9", "I1", "I2", "J1", "J2", "J3", "J4", "J5", "J6", "K1", "K2", "K3", "K4", "L1", "L2", "M1")
-  allSTARTcriteria <- c("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "B1", "B2", "C1", "C2", "C3", "C4", "C5", "C6", "D1", "D2", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "F1", "G1_2", "G2", "G3", "H1", "H2", "I2")
+  allSTARTcriteria <- c("A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8", "B1", "B2", "C1", "C2", "C3", "C4", "C5", "C6", "D1", "D2", "E1", "E2", "E3", "E4", "E5", "E6", "E7", "F1", "G1_2", "G2", "G3", "H1", "H2")
 
   if (tolower(STOPPselected) != c('all') & tolower(STOPPselected) != 'all') {
     excludedSTOPP <- setdiff(allSTOPPcriteria, STOPPselected)
