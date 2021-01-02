@@ -51,7 +51,7 @@ import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=
   # variable to check if this patient has missing data. Initialized to FALSE.
   has_missing <- FALSE
 
-  for (i in 1:length(pids)) {
+  for (i in seq_along(pids)) {
     if (pid == pids[i]) { # still the same patient id - collecting data
 
       #checking if it is NA - missing data in case we chose to not ignore them
@@ -113,15 +113,16 @@ import_excel_data <- function(current_data, path, worksheet, var_col, ignore_na=
     }
   }
 
-  # keep the data for the last patient. Till now it kept the data for the n-1 patients
-  pdata[[pids[i]]] <- c(pdata[[pids[i]]], list(conditions))
+  if (length(pids) > 0) {
 
-  # we also record the id if she/he has missing data.
-  if (has_missing){
-    missing_data_patients[[pids[i]]] <- c(missing_data_patients[[pids[i]]], var_col)
+    # keep the data for the last patient. Till now it kept the data for the n-1 patients
+    pdata[[pids[i]]] <- c(pdata[[pids[i]]], list(conditions))
+
+    # we also record the id if she/he has missing data.
+    if (has_missing){
+      missing_data_patients[[pids[i]]] <- c(missing_data_patients[[pids[i]]], var_col)
+    }
   }
-
-  # ret <- list(pdata, missing_data_patients)
 
   invisible (list(pdata, missing_data_patients))  # instead of return as we do not want to be printed
 }

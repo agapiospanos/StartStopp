@@ -4,16 +4,9 @@
 \alias{STARTselected}
 \title{Evaluates the imported patients' data for the selected START criteria at once.}
 \usage{
-STARTselected(
-  selected = NULL,
-  exclude = NULL,
-  path = NULL,
-  excel_out = TRUE,
-  single_excel = TRUE,
-  export_data_path = NULL,
-  suppressNA = TRUE,
-  returnData = FALSE
-)
+STARTselected(selected = NULL, exclude = NULL, path = NULL,
+  excel_out = TRUE, single_excel = TRUE, export_data_path = NULL,
+  suppressNA = TRUE, returnData = FALSE)
 }
 \arguments{
 \item{selected}{(Character vector) the selected criteria to export given in the form of c("A1", "E2")}

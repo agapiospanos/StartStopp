@@ -4,17 +4,10 @@
 \alias{STARTSTOPPbycategory}
 \title{Evaluates the imported patients' data for all the START and STOPP criteria at once and returns the results by category (overuse, misuse, underuse) and not by each criterion (e.g. STOPP B1, STOPP B2, etc.).}
 \usage{
-STARTSTOPPbycategory(
-  path = NULL,
-  STARTselected = "all",
-  STARTexclude = NULL,
-  STOPPselected = "all",
-  STOPPexclude = NULL,
-  excel_out = TRUE,
-  single_excel = TRUE,
-  export_data_path = NULL,
-  suppressNA = TRUE
-)
+STARTSTOPPbycategory(path = NULL, STARTselected = "all",
+  STARTexclude = NULL, STOPPselected = "all", STOPPexclude = NULL,
+  excel_out = TRUE, single_excel = TRUE, export_data_path = NULL,
+  suppressNA = TRUE)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}

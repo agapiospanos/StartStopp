@@ -4,12 +4,8 @@
 \alias{STOPP_C3}
 \title{Evaluates the imported patients' data for the STOPP C3 criterion.}
 \usage{
-STOPP_C3(
-  path = NULL,
-  excel_out = TRUE,
-  export_data_path = NULL,
-  suppressNA = TRUE
-)
+STOPP_C3(path = NULL, excel_out = TRUE, export_data_path = NULL,
+  suppressNA = TRUE)
 }
 \arguments{
 \item{path}{(Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.}

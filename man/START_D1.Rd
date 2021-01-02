@@ -4,12 +4,8 @@
 \alias{START_D1}
 \title{Evaluates the imported patients' data for the START D1 criterion.}
 \usage{
-START_D1(
-  path = NULL,
-  excel_out = TRUE,
-  export_data_path = NULL,
-  suppressNA = TRUE
-)
+START_D1(path = NULL, excel_out = TRUE, export_data_path = NULL,
+  suppressNA = TRUE)
 }
 \arguments{
 \item{path}{(Character) (optional) (default: NULL) the path that the excel file can be read from. If not specified a file choose window will be displayed.}

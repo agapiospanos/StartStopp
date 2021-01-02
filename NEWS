@@ -1,3 +1,7 @@
+***StartStopp, version 1.6.1 ***
+
+- little bugfix for cases that an excel sheet doesn't contain any records for patients
+
 ***StartStopp, version 1.6.0 ***
 
 - removed START I2 criterion

@@ -4,7 +4,8 @@
 \alias{STOPP_J1}
 \title{Evaluates the imported patients' data for the STOPP J1 criterion.}
 \usage{
-STOPP_J1(path, excel_out = TRUE, export_data_path = NULL, suppressNA = TRUE)
+STOPP_J1(path, excel_out = TRUE, export_data_path = NULL,
+  suppressNA = TRUE)
 }
 \arguments{
 \item{path}{(Character) the path that the excel file can be read from.}
